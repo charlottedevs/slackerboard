@@ -9,19 +9,18 @@ RSpec.describe ProcessSlackEvent do
   let(:user_slack_id) { payload.dig('event', 'user') }
   let(:channel) { double(:channel, id: 7) }
   let(:user) { double(:user, id: 7) }
-  let(:stat) { double(:stat) }
-
+  let(:stat) do
+    create(:channel_stat, messages_given: 1, reactions_given: 1)
+  end
 
   before do
     allow(SlackChannel).to receive(:find_or_create_by).and_return(channel)
     allow(User).to receive(:find_or_create_by).and_return(user)
     allow(ChannelStat).to receive(:find_or_create_by).and_return(stat)
-    allow(stat).to receive(:increment)
   end
 
   describe 'find or creating' do
     it 'creates a slack channel if not existant' do
-      expect(SlackChannel.count).to eq 0
       expect(SlackChannel).to receive(:find_or_create_by).with(
         slack_identifier: slack_channel_id
       )
@@ -30,7 +29,6 @@ RSpec.describe ProcessSlackEvent do
 
 
     it 'creates a user if not existant' do
-      expect(User.count).to eq 0
       expect(User).to receive(:find_or_create_by).with(
         slack_identifier: user_slack_id
       )
@@ -51,14 +49,14 @@ RSpec.describe ProcessSlackEvent do
       let(:event_fixture) { 'slack_message_created_event' }
 
       it 'adds to stat#messages_given' do
-        expect(stat).to receive(:increment).with(:messages_given)
-        expect(stat).to_not receive(:decrement)
+        original = stat.messages_given
         perform
+        expect(stat.messages_given).to eq(original + 1)
       end
 
       it 'does NOT change reactions_given' do
-        expect(stat).to_not receive(:decrement).with(:reactions_given)
-        expect(stat).to_not receive(:increment).with(:reactions_given)
+        expect(stat).to_not receive(:decrement!).with(:reactions_given)
+        expect(stat).to_not receive(:increment!).with(:reactions_given)
         perform
       end
     end
@@ -67,15 +65,24 @@ RSpec.describe ProcessSlackEvent do
       let(:event_fixture) { 'slack_message_deleted_event' }
 
       it 'removes from stat#messages_given' do
-        expect(stat).to receive(:decrement).with(:messages_given)
-        expect(stat).to_not receive(:increment)
+        original = stat.messages_given
         perform
+        expect(stat.messages_given).to eq(original - 1)
       end
 
       it 'does NOT change reactions_given' do
-        expect(stat).to_not receive(:decrement).with(:reactions_given)
-        expect(stat).to_not receive(:increment).with(:reactions_given)
+        original = stat.reactions_given
         perform
+        expect(stat.reactions_given).to eq(original)
+      end
+
+      context 'when messages_given is nil or 0' do
+        let(:stat) { double(:stat, messages_given: 0) }
+
+        it 'does not decrement into negative numbers' do
+          expect(stat).to_not receive(:decrement!).with(:messages_given)
+          perform
+        end
       end
     end
 
@@ -83,15 +90,15 @@ RSpec.describe ProcessSlackEvent do
       let(:event_fixture) { 'slack_reaction_added_event' }
 
       it 'adds to stat#reactions_given' do
-        expect(stat).to receive(:increment).with(:reactions_given)
-        expect(stat).to_not receive(:decrement)
+        original = stat.reactions_given
         perform
+        expect(stat.reactions_given).to eq(original + 1)
       end
 
       it 'does MOT change messages given' do
-        expect(stat).to_not receive(:decrement).with(:messages_given)
-        expect(stat).to_not receive(:increment).with(:messages_given)
+        original = stat.messages_given
         perform
+        expect(stat.messages_given).to eq(original)
       end
     end
 
@@ -99,17 +106,25 @@ RSpec.describe ProcessSlackEvent do
       let(:event_fixture) { 'slack_reaction_removed_event' }
 
       it 'removes from stat#messages_given' do
-        expect(stat).to receive(:decrement).with(:reactions_given)
-        expect(stat).to_not receive(:increment)
+        original = stat.reactions_given
         perform
+        expect(stat.reactions_given).to eq(original - 1)
       end
 
       it 'does NOT change messages_given' do
-        expect(stat).to_not receive(:decrement).with(:messages_given)
-        expect(stat).to_not receive(:increment).with(:messages_given)
+        original = stat.messages_given
         perform
+        expect(stat.messages_given).to eq(original)
       end
 
+      context 'when reactions_given is NOT positive' do
+        let(:stat) { double(:stat, reactions_given: 0) }
+
+        it 'does not decrement into negative numbers' do
+          expect(stat).to_not receive(:decrement!).with(:reactions_given)
+          perform
+        end
+      end
     end
   end
 end

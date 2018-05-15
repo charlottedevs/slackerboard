@@ -3,19 +3,25 @@ class ProcessSlackEvent
 
   def call
     if message_created?
-      stat.increment(:messages_given)
+      update_stat!(:messages_given, 1)
     elsif message_deleted?
-      stat.decrement(:messages_given)
+      update_stat!(:messages_given, -1)
     elsif reaction_given?
-      stat.increment(:reactions_given)
+      update_stat!(:reactions_given, 1)
     elsif reaction_removed?
-      stat.decrement(:reactions_given)
+      update_stat!(:reactions_given, -1)
     end
   end
 
   private
 
-  def stat
+  def update_stat!(attr, delta)
+    result = metric.send(attr) + delta
+    return unless result >= 0 # no going into debt
+    metric.update!(attr => result)
+  end
+
+  def metric
     context.stat ||= ChannelStat.find_or_create_by(
       slack_channel_id: channel.id, user_id: user.id
     )

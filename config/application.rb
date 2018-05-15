@@ -13,6 +13,7 @@ module LurkingButterfly
 
     config.generators do |g|
       g.test_framework :rspec
+      g.fixture_replacement :factory_girl
     end
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers

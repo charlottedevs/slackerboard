@@ -18,8 +18,8 @@ ActiveRecord::Schema.define(version: 2018_05_15_140403) do
   create_table "channel_stats", force: :cascade do |t|
     t.bigint "slack_channel_id"
     t.bigint "user_id"
-    t.integer "messages_given"
-    t.integer "reactions_given"
+    t.integer "messages_given", default: 0
+    t.integer "reactions_given", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["slack_channel_id"], name: "index_channel_stats_on_slack_channel_id"
