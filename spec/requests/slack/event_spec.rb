@@ -20,6 +20,17 @@ RSpec.describe "Slack Events" do
     channel
   end
 
+  describe 'challenge event' do
+    let(:event_fixture) { 'challenge_event' }
+
+    it 'responds with challenge from payload' do
+      make_request
+      parsed_response = JSON.parse response.body
+      expect(parsed_response.keys).to include 'challenge'
+      expect(parsed_response['challenge']).to eq(payload['challenge'])
+    end
+  end
+
   describe 'message created event' do
     let(:event_fixture) { 'slack_message_created_event' }
 

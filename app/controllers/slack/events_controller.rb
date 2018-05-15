@@ -1,7 +1,12 @@
 module Slack
   class EventsController < ActionController::API
     def create
-      ProcessSlackEvent.call(event_params)
+      if params['challenge'].present?
+        render json: { challenge: params['challenge'] }
+      else
+        ProcessSlackEvent.call(event_params)
+        render json: { status: 'ok' }
+      end
     end
 
     private
