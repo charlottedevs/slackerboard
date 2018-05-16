@@ -1,0 +1,7 @@
+redis: &redis
+  adapter: redis
+  url: redis://redis/1
+
+production: *redis
+development: *redis
+test: *redis
