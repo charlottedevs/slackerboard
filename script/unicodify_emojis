@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+
+require File.expand_path('../../config/boot',  __FILE__)
+
+emoji_dir = Rails.root.join('public', 'images', 'emoji')
+unicode_dir = emoji_path.join('unicode')
+
+unless Dir.exist? unicode_dir
+  Dir.mkdir unicode_dir
+end
+
+
+missing_emoji = []
+
+Emoji.all.each do |e|
+  png = emoji_dir.join("#{e.name}.png")
+
+  if png.exist?
+    unicode_path = unicode_dir.join("#{e.hex_inspect}.png")
+    unless unicode_path.exist?
+      FileUtils.cp(png, unicode_path)
+    end
+  else
+    missing_emoji << e.name
+  end
+end

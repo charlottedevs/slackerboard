@@ -41,6 +41,13 @@ delete_message (-1)
 ```
 
 
+## TODO
+get slack custom emoji
+```
+https://api.slack.com/methods/emoji.list
+event: emoji_changed
+
+```
 
 
 ## example event
