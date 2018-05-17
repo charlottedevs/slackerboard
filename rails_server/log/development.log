@@ -10001,3 +10001,36 @@ Processing by SlackersController#index as HTML
 Completed 200 OK in 13ms (Views: 0.2ms | ActiveRecord: 2.1ms)
 
 
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 19:58:29 +0000
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (3.6ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (0.7ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (1.2ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 36ms (Views: 0.2ms | ActiveRecord: 6.1ms)
+
+
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 19:58:30 +0000
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (0.5ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (0.6ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 9ms (Views: 0.1ms | ActiveRecord: 1.7ms)
+
+
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 19:58:33 +0000
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (3.0ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (0.5ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 12ms (Views: 0.2ms | ActiveRecord: 4.2ms)
+
+

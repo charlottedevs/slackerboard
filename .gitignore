@@ -27,3 +27,4 @@
 tmp
 .env
 node_modules
+log
