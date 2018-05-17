@@ -19,6 +19,7 @@ services:
     command: sidekiq -C config/sidekiq.yml
     volumes:
       - ./rails_server:/home/app/webapp
+      - bundle:/usr/local/bundle
     links:
       - redis
 

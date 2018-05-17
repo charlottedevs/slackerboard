@@ -4,15 +4,9 @@ module Slack
       if params['challenge'].present?
         render json: { challenge: params['challenge'] }
       else
-        ProcessSlackEvent.call(event_params)
+        SlackEventWorker.perform_async(params.to_json)
         render json: { status: 'ok' }
       end
-    end
-
-    private
-
-    def event_params
-      params.permit! # yep, TODO
     end
   end
 end

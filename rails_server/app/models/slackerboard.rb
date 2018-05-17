@@ -24,10 +24,9 @@ class Slackerboard
             json.messages_sent channel.messages_given
           end
 
-          # TODO update schema
-          json.reactions user.channel_stats do |mock|
-            json.emoji 'cat'
-            json.reactions_given mock.reactions_given
+          json.reactions user.reaction_stats do |reaction|
+            json.emoji reaction.emoji
+            json.reactions_given reaction.reactions_given
           end
         end
       end

@@ -49,6 +49,8 @@ RSpec.describe "Slack Events" do
       metric.reload
       expect(metric.messages_given).to eq(2)
     end
+
+    it_behaves_like 'slackerboard_update'
   end
 
   describe 'message deleted event' do
@@ -60,6 +62,9 @@ RSpec.describe "Slack Events" do
       metric.reload
       expect(metric.messages_given).to eq(0)
     end
+
+
+    it_behaves_like 'slackerboard_update'
 
     context 'when messages_given is 0' do
       it 'does NOT change stat#messages_given' do
@@ -79,6 +84,8 @@ RSpec.describe "Slack Events" do
       metric.reload
       expect(metric.reactions_given).to eq(2)
     end
+
+    it_behaves_like 'slackerboard_update'
   end
 
 
@@ -91,6 +98,9 @@ RSpec.describe "Slack Events" do
       metric.reload
       expect(metric.reactions_given).to eq(0)
     end
+
+
+    it_behaves_like 'slackerboard_update'
 
     context 'when messages_given is 0' do
       it 'does NOT change stat#reactions_given' do
