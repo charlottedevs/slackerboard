@@ -8985,3 +8985,1019 @@ puma (3.11.4) lib/puma/server.rb:446:in `process_client'
 puma (3.11.4) lib/puma/server.rb:306:in `block in run'
 puma (3.11.4) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
 [ActionCable] Broadcasting to slackerboard_change: {:message=>"foo"}
+  [1m[35m (357.9ms)[0m  [1m[35mCREATE DATABASE "lurkerbot_development" ENCODING = 'unicode'[0m
+  ↳ bin/rails:4
+  [1m[35m (268.0ms)[0m  [1m[35mCREATE DATABASE "lurkerbot_test" ENCODING = 'unicode'[0m
+  ↳ bin/rails:4
+  [1m[35mSQL (0.3ms)[0m  [1m[35mCREATE EXTENSION IF NOT EXISTS "plpgsql"[0m
+  ↳ db/schema.rb:16
+  [1m[35m (0.3ms)[0m  [1m[35mDROP TABLE IF EXISTS "channel_stats" CASCADE[0m
+  ↳ db/schema.rb:18
+  [1m[35m (6.4ms)[0m  [1m[35mCREATE TABLE "channel_stats" ("id" bigserial primary key, "slack_channel_id" bigint, "user_id" bigint, "messages_given" integer DEFAULT 0, "reactions_given" integer DEFAULT 0, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  ↳ db/schema.rb:18
+  [1m[35m (3.4ms)[0m  [1m[35mCREATE  INDEX  "index_channel_stats_on_slack_channel_id" ON "channel_stats"  ("slack_channel_id")[0m
+  ↳ db/schema.rb:18
+  [1m[35m (4.3ms)[0m  [1m[35mCREATE  INDEX  "index_channel_stats_on_user_id" ON "channel_stats"  ("user_id")[0m
+  ↳ db/schema.rb:18
+  [1m[35m (0.3ms)[0m  [1m[35mDROP TABLE IF EXISTS "slack_channels" CASCADE[0m
+  ↳ db/schema.rb:29
+  [1m[35m (7.4ms)[0m  [1m[35mCREATE TABLE "slack_channels" ("id" bigserial primary key, "slack_identifier" character varying, "name" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  ↳ db/schema.rb:29
+  [1m[35m (0.4ms)[0m  [1m[35mDROP TABLE IF EXISTS "users" CASCADE[0m
+  ↳ db/schema.rb:36
+  [1m[35m (7.8ms)[0m  [1m[35mCREATE TABLE "users" ("id" bigserial primary key, "slack_identifier" character varying, "slack_handle" character varying, "real_name" character varying, "profile_image" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  ↳ db/schema.rb:36
+  [1m[35m (3.2ms)[0m  [1m[35mALTER TABLE "channel_stats" ADD CONSTRAINT "fk_rails_9bc58e8bfa"
+FOREIGN KEY ("slack_channel_id")
+  REFERENCES "slack_channels" ("id")
+[0m
+  ↳ db/schema.rb:45
+  [1m[35m (2.0ms)[0m  [1m[35mALTER TABLE "channel_stats" ADD CONSTRAINT "fk_rails_5940d17953"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+[0m
+  ↳ db/schema.rb:46
+  [1m[35m (6.2ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY)[0m
+  ↳ db/schema.rb:13
+  [1m[35m (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  ↳ db/schema.rb:13
+  [1m[35m (1.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20180515140403)[0m
+  ↳ db/schema.rb:13
+  [1m[35m (1.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20180515135704),
+(20180515120503);
+
+[0m
+  ↳ db/schema.rb:13
+  [1m[35m (7.0ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  ↳ db/schema.rb:13
+  [1m[36mActiveRecord::InternalMetadata Load (0.4ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  ↳ db/schema.rb:13
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  ↳ db/schema.rb:13
+  [1m[36mActiveRecord::InternalMetadata Create (0.6ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "key"[0m  [["key", "environment"], ["value", "development"], ["created_at", "2018-05-17 13:48:41.650687"], ["updated_at", "2018-05-17 13:48:41.650687"]]
+  ↳ db/schema.rb:13
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+  ↳ db/schema.rb:13
+  [1m[36mActiveRecord::InternalMetadata Load (0.4ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  ↳ bin/rails:4
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  ↳ bin/rails:4
+  [1m[35m (0.2ms)[0m  [1m[35mCOMMIT[0m
+  ↳ bin/rails:4
+  [1m[35mSQL (0.3ms)[0m  [1m[35mCREATE EXTENSION IF NOT EXISTS "plpgsql"[0m
+  ↳ db/schema.rb:16
+  [1m[35m (0.3ms)[0m  [1m[35mDROP TABLE IF EXISTS "channel_stats" CASCADE[0m
+  ↳ db/schema.rb:18
+  [1m[35m (6.3ms)[0m  [1m[35mCREATE TABLE "channel_stats" ("id" bigserial primary key, "slack_channel_id" bigint, "user_id" bigint, "messages_given" integer DEFAULT 0, "reactions_given" integer DEFAULT 0, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  ↳ db/schema.rb:18
+  [1m[35m (3.1ms)[0m  [1m[35mCREATE  INDEX  "index_channel_stats_on_slack_channel_id" ON "channel_stats"  ("slack_channel_id")[0m
+  ↳ db/schema.rb:18
+  [1m[35m (3.7ms)[0m  [1m[35mCREATE  INDEX  "index_channel_stats_on_user_id" ON "channel_stats"  ("user_id")[0m
+  ↳ db/schema.rb:18
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE IF EXISTS "slack_channels" CASCADE[0m
+  ↳ db/schema.rb:29
+  [1m[35m (6.3ms)[0m  [1m[35mCREATE TABLE "slack_channels" ("id" bigserial primary key, "slack_identifier" character varying, "name" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  ↳ db/schema.rb:29
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE IF EXISTS "users" CASCADE[0m
+  ↳ db/schema.rb:36
+  [1m[35m (7.0ms)[0m  [1m[35mCREATE TABLE "users" ("id" bigserial primary key, "slack_identifier" character varying, "slack_handle" character varying, "real_name" character varying, "profile_image" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  ↳ db/schema.rb:36
+  [1m[35m (3.0ms)[0m  [1m[35mALTER TABLE "channel_stats" ADD CONSTRAINT "fk_rails_9bc58e8bfa"
+FOREIGN KEY ("slack_channel_id")
+  REFERENCES "slack_channels" ("id")
+[0m
+  ↳ db/schema.rb:45
+  [1m[35m (2.1ms)[0m  [1m[35mALTER TABLE "channel_stats" ADD CONSTRAINT "fk_rails_5940d17953"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+[0m
+  ↳ db/schema.rb:46
+  [1m[35m (6.2ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY)[0m
+  ↳ db/schema.rb:13
+  [1m[35m (0.9ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  ↳ db/schema.rb:13
+  [1m[35m (1.6ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20180515140403)[0m
+  ↳ db/schema.rb:13
+  [1m[35m (1.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20180515135704),
+(20180515120503);
+
+[0m
+  ↳ db/schema.rb:13
+  [1m[35m (6.5ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  ↳ db/schema.rb:13
+  [1m[36mActiveRecord::InternalMetadata Load (0.5ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  ↳ db/schema.rb:13
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  ↳ db/schema.rb:13
+  [1m[36mActiveRecord::InternalMetadata Create (0.7ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "key"[0m  [["key", "environment"], ["value", "development"], ["created_at", "2018-05-17 13:48:41.740763"], ["updated_at", "2018-05-17 13:48:41.740763"]]
+  ↳ db/schema.rb:13
+  [1m[35m (1.6ms)[0m  [1m[35mCOMMIT[0m
+  ↳ db/schema.rb:13
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  ↳ bin/rails:4
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ bin/rails:4
+  [1m[36mActiveRecord::InternalMetadata Update (0.4ms)[0m  [1m[33mUPDATE "ar_internal_metadata" SET "value" = $1, "updated_at" = $2 WHERE "ar_internal_metadata"."key" = $3[0m  [["value", "test"], ["updated_at", "2018-05-17 13:48:41.746764"], ["key", "environment"]]
+  ↳ bin/rails:4
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+  ↳ bin/rails:4
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  ↳ bin/rails:4
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ db/seeds.rb:9
+  [1m[36mSlackChannel Create (0.4ms)[0m  [1m[32mINSERT INTO "slack_channels" ("slack_identifier", "name", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["slack_identifier", "G024BE91L"], ["name", "general"], ["created_at", "2018-05-17 13:48:41.787455"], ["updated_at", "2018-05-17 13:48:41.787455"]]
+  ↳ db/seeds.rb:9
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+  ↳ db/seeds.rb:9
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ db/seeds.rb:9
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("slack_identifier", "slack_handle", "real_name", "profile_image", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["slack_identifier", "U2147483697"], ["slack_handle", "coolguy"], ["real_name", "Cool Guy"], ["profile_image", "https://avatars3.githubusercontent.com/u/6183?s=200&v=4"], ["created_at", "2018-05-17 13:48:41.804422"], ["updated_at", "2018-05-17 13:48:41.804422"]]
+  ↳ db/seeds.rb:9
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  ↳ db/seeds.rb:9
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  ↳ db/seeds.rb:9
+  [1m[36mChannelStat Create (1.5ms)[0m  [1m[32mINSERT INTO "channel_stats" ("slack_channel_id", "user_id", "messages_given", "reactions_given", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["slack_channel_id", 1], ["user_id", 1], ["messages_given", 1], ["reactions_given", 1], ["created_at", "2018-05-17 13:48:41.810814"], ["updated_at", "2018-05-17 13:48:41.810814"]]
+  ↳ db/seeds.rb:9
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  ↳ db/seeds.rb:9
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" ORDER BY "users"."id" DESC LIMIT $1[0m  [["LIMIT", 1]]
+Started GET "/" for 172.23.0.1 at 2018-05-17 13:58:55 +0000
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  ↳ /usr/local/bundle/gems/activerecord-5.2.0/lib/active_record/log_subscriber.rb:98
+Processing by LeaderboardController#index as */*
+No template found for LeaderboardController#index, rendering head :no_content
+Completed 204 No Content in 20ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/" for 172.23.0.1 at 2018-05-17 13:58:57 +0000
+Processing by LeaderboardController#index as */*
+No template found for LeaderboardController#index, rendering head :no_content
+Completed 204 No Content in 18ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/slackers" for 172.23.0.1 at 2018-05-17 13:59:16 +0000
+  
+ActionController::RoutingError (No route matches [GET] "/slackers"):
+  
+actionpack (5.2.0) lib/action_dispatch/middleware/debug_exceptions.rb:65:in `call'
+actionpack (5.2.0) lib/action_dispatch/middleware/show_exceptions.rb:33:in `call'
+railties (5.2.0) lib/rails/rack/logger.rb:38:in `call_app'
+railties (5.2.0) lib/rails/rack/logger.rb:26:in `block in call'
+activesupport (5.2.0) lib/active_support/tagged_logging.rb:71:in `block in tagged'
+activesupport (5.2.0) lib/active_support/tagged_logging.rb:28:in `tagged'
+activesupport (5.2.0) lib/active_support/tagged_logging.rb:71:in `tagged'
+railties (5.2.0) lib/rails/rack/logger.rb:26:in `call'
+sprockets-rails (3.2.1) lib/sprockets/rails/quiet_assets.rb:13:in `call'
+actionpack (5.2.0) lib/action_dispatch/middleware/remote_ip.rb:81:in `call'
+actionpack (5.2.0) lib/action_dispatch/middleware/request_id.rb:27:in `call'
+rack (2.0.5) lib/rack/runtime.rb:22:in `call'
+activesupport (5.2.0) lib/active_support/cache/strategy/local_cache_middleware.rb:29:in `call'
+actionpack (5.2.0) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (5.2.0) lib/action_dispatch/middleware/static.rb:127:in `call'
+rack (2.0.5) lib/rack/sendfile.rb:111:in `call'
+railties (5.2.0) lib/rails/engine.rb:524:in `call'
+puma (3.11.4) lib/puma/configuration.rb:225:in `call'
+puma (3.11.4) lib/puma/server.rb:632:in `handle_request'
+puma (3.11.4) lib/puma/server.rb:446:in `process_client'
+puma (3.11.4) lib/puma/server.rb:306:in `block in run'
+puma (3.11.4) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+Started GET "/slackers" for 172.23.0.1 at 2018-05-17 13:59:30 +0000
+  
+ActionController::RoutingError (No route matches [GET] "/slackers"):
+  
+actionpack (5.2.0) lib/action_dispatch/middleware/debug_exceptions.rb:65:in `call'
+actionpack (5.2.0) lib/action_dispatch/middleware/show_exceptions.rb:33:in `call'
+railties (5.2.0) lib/rails/rack/logger.rb:38:in `call_app'
+railties (5.2.0) lib/rails/rack/logger.rb:26:in `block in call'
+activesupport (5.2.0) lib/active_support/tagged_logging.rb:71:in `block in tagged'
+activesupport (5.2.0) lib/active_support/tagged_logging.rb:28:in `tagged'
+activesupport (5.2.0) lib/active_support/tagged_logging.rb:71:in `tagged'
+railties (5.2.0) lib/rails/rack/logger.rb:26:in `call'
+sprockets-rails (3.2.1) lib/sprockets/rails/quiet_assets.rb:13:in `call'
+actionpack (5.2.0) lib/action_dispatch/middleware/remote_ip.rb:81:in `call'
+actionpack (5.2.0) lib/action_dispatch/middleware/request_id.rb:27:in `call'
+rack (2.0.5) lib/rack/runtime.rb:22:in `call'
+activesupport (5.2.0) lib/active_support/cache/strategy/local_cache_middleware.rb:29:in `call'
+actionpack (5.2.0) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (5.2.0) lib/action_dispatch/middleware/static.rb:127:in `call'
+rack (2.0.5) lib/rack/sendfile.rb:111:in `call'
+railties (5.2.0) lib/rails/engine.rb:524:in `call'
+puma (3.11.4) lib/puma/configuration.rb:225:in `call'
+puma (3.11.4) lib/puma/server.rb:632:in `handle_request'
+puma (3.11.4) lib/puma/server.rb:446:in `process_client'
+puma (3.11.4) lib/puma/server.rb:306:in `block in run'
+puma (3.11.4) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+Started GET "/slackers" for 172.23.0.1 at 2018-05-17 14:00:30 +0000
+  
+ActionController::RoutingError (No route matches [GET] "/slackers"):
+  
+actionpack (5.2.0) lib/action_dispatch/middleware/debug_exceptions.rb:65:in `call'
+actionpack (5.2.0) lib/action_dispatch/middleware/show_exceptions.rb:33:in `call'
+railties (5.2.0) lib/rails/rack/logger.rb:38:in `call_app'
+railties (5.2.0) lib/rails/rack/logger.rb:26:in `block in call'
+activesupport (5.2.0) lib/active_support/tagged_logging.rb:71:in `block in tagged'
+activesupport (5.2.0) lib/active_support/tagged_logging.rb:28:in `tagged'
+activesupport (5.2.0) lib/active_support/tagged_logging.rb:71:in `tagged'
+railties (5.2.0) lib/rails/rack/logger.rb:26:in `call'
+sprockets-rails (3.2.1) lib/sprockets/rails/quiet_assets.rb:13:in `call'
+actionpack (5.2.0) lib/action_dispatch/middleware/remote_ip.rb:81:in `call'
+actionpack (5.2.0) lib/action_dispatch/middleware/request_id.rb:27:in `call'
+rack (2.0.5) lib/rack/runtime.rb:22:in `call'
+activesupport (5.2.0) lib/active_support/cache/strategy/local_cache_middleware.rb:29:in `call'
+actionpack (5.2.0) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (5.2.0) lib/action_dispatch/middleware/static.rb:127:in `call'
+rack (2.0.5) lib/rack/sendfile.rb:111:in `call'
+railties (5.2.0) lib/rails/engine.rb:524:in `call'
+puma (3.11.4) lib/puma/configuration.rb:225:in `call'
+puma (3.11.4) lib/puma/server.rb:632:in `handle_request'
+puma (3.11.4) lib/puma/server.rb:446:in `process_client'
+puma (3.11.4) lib/puma/server.rb:306:in `block in run'
+puma (3.11.4) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+Started GET "/slackers" for 172.23.0.1 at 2018-05-17 14:00:44 +0000
+  [1m[35m (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  ↳ /usr/local/bundle/gems/activerecord-5.2.0/lib/active_record/log_subscriber.rb:98
+  
+ActionController::RoutingError (No route matches [GET] "/slackers"):
+  
+actionpack (5.2.0) lib/action_dispatch/middleware/debug_exceptions.rb:65:in `call'
+actionpack (5.2.0) lib/action_dispatch/middleware/show_exceptions.rb:33:in `call'
+railties (5.2.0) lib/rails/rack/logger.rb:38:in `call_app'
+railties (5.2.0) lib/rails/rack/logger.rb:26:in `block in call'
+activesupport (5.2.0) lib/active_support/tagged_logging.rb:71:in `block in tagged'
+activesupport (5.2.0) lib/active_support/tagged_logging.rb:28:in `tagged'
+activesupport (5.2.0) lib/active_support/tagged_logging.rb:71:in `tagged'
+railties (5.2.0) lib/rails/rack/logger.rb:26:in `call'
+sprockets-rails (3.2.1) lib/sprockets/rails/quiet_assets.rb:13:in `call'
+actionpack (5.2.0) lib/action_dispatch/middleware/remote_ip.rb:81:in `call'
+actionpack (5.2.0) lib/action_dispatch/middleware/request_id.rb:27:in `call'
+rack (2.0.5) lib/rack/runtime.rb:22:in `call'
+activesupport (5.2.0) lib/active_support/cache/strategy/local_cache_middleware.rb:29:in `call'
+actionpack (5.2.0) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (5.2.0) lib/action_dispatch/middleware/static.rb:127:in `call'
+rack (2.0.5) lib/rack/sendfile.rb:111:in `call'
+railties (5.2.0) lib/rails/engine.rb:524:in `call'
+puma (3.11.4) lib/puma/configuration.rb:225:in `call'
+puma (3.11.4) lib/puma/server.rb:632:in `handle_request'
+puma (3.11.4) lib/puma/server.rb:446:in `process_client'
+puma (3.11.4) lib/puma/server.rb:306:in `block in run'
+puma (3.11.4) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+Started GET "/slackerboard" for 172.23.0.1 at 2018-05-17 14:00:50 +0000
+Processing by SlackersController#index as */*
+Completed 200 OK in 0ms (Views: 0.2ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/slackerboard" for 172.23.0.1 at 2018-05-17 14:01:08 +0000
+Started GET "/slackers" for 172.23.0.1 at 2018-05-17 14:01:18 +0000
+  
+ActionController::RoutingError (No route matches [GET] "/slackerboard"):
+  
+actionpack (5.2.0) lib/action_dispatch/middleware/debug_exceptions.rb:65:in `call'
+actionpack (5.2.0) lib/action_dispatch/middleware/show_exceptions.rb:33:in `call'
+railties (5.2.0) lib/rails/rack/logger.rb:38:in `call_app'
+railties (5.2.0) lib/rails/rack/logger.rb:26:in `block in call'
+activesupport (5.2.0) lib/active_support/tagged_logging.rb:71:in `block in tagged'
+activesupport (5.2.0) lib/active_support/tagged_logging.rb:28:in `tagged'
+activesupport (5.2.0) lib/active_support/tagged_logging.rb:71:in `tagged'
+railties (5.2.0) lib/rails/rack/logger.rb:26:in `call'
+sprockets-rails (3.2.1) lib/sprockets/rails/quiet_assets.rb:13:in `call'
+actionpack (5.2.0) lib/action_dispatch/middleware/remote_ip.rb:81:in `call'
+actionpack (5.2.0) lib/action_dispatch/middleware/request_id.rb:27:in `call'
+rack (2.0.5) lib/rack/runtime.rb:22:in `call'
+activesupport (5.2.0) lib/active_support/cache/strategy/local_cache_middleware.rb:29:in `call'
+actionpack (5.2.0) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (5.2.0) lib/action_dispatch/middleware/static.rb:127:in `call'
+rack (2.0.5) lib/rack/sendfile.rb:111:in `call'
+railties (5.2.0) lib/rails/engine.rb:524:in `call'
+puma (3.11.4) lib/puma/configuration.rb:225:in `call'
+puma (3.11.4) lib/puma/server.rb:632:in `handle_request'
+puma (3.11.4) lib/puma/server.rb:446:in `process_client'
+puma (3.11.4) lib/puma/server.rb:306:in `block in run'
+puma (3.11.4) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+Processing by SlackersController#index as */*
+Completed 200 OK in 0ms (Views: 0.2ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/slackers" for 172.23.0.1 at 2018-05-17 14:01:25 +0000
+  [1m[35m (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  ↳ /usr/local/bundle/gems/activerecord-5.2.0/lib/active_record/log_subscriber.rb:98
+Processing by SlackersController#index as */*
+Completed 200 OK in 0ms (Views: 0.2ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/slackers" for 172.23.0.1 at 2018-05-17 14:08:35 +0000
+Processing by SlackersController#index as */*
+Completed 200 OK in 0ms (Views: 0.3ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/slackers" for 172.23.0.1 at 2018-05-17 14:09:00 +0000
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  ↳ /usr/local/bundle/gems/activerecord-5.2.0/lib/active_record/log_subscriber.rb:98
+Processing by SlackersController#index as */*
+Completed 200 OK in 0ms (Views: 0.2ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/slackers" for 172.23.0.1 at 2018-05-17 14:09:06 +0000
+Processing by SlackersController#index as */*
+No template found for SlackersController#index, rendering head :no_content
+Completed 204 No Content in 35ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/slackers" for 172.23.0.1 at 2018-05-17 14:09:35 +0000
+Processing by SlackersController#index as */*
+No template found for SlackersController#index, rendering head :no_content
+Completed 204 No Content in 22ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/slackers" for 172.23.0.1 at 2018-05-17 14:09:44 +0000
+Processing by SlackersController#index as */*
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/controllers/slackers_controller.rb:4
+Completed 200 OK in 14ms (Views: 6.7ms | ActiveRecord: 4.8ms)
+
+
+Started GET "/slackers" for 172.23.0.1 at 2018-05-17 14:10:27 +0000
+Processing by SlackersController#index as */*
+  [1m[36mUser Load (0.9ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/controllers/slackers_controller.rb:4
+Completed 200 OK in 5ms (Views: 3.1ms | ActiveRecord: 0.9ms)
+
+
+Started GET "/slackers" for 172.23.0.1 at 2018-05-17 14:11:59 +0000
+Processing by SlackersController#index as */*
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT  "users".* FROM "users" LIMIT $1[0m  [["LIMIT", 11]]
+  ↳ /usr/local/bundle/gems/activerecord-5.2.0/lib/active_record/log_subscriber.rb:98
+Completed 500 Internal Server Error in 18ms (ActiveRecord: 0.0ms)
+
+
+  
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT  "users".* FROM "users" LIMIT $1[0m  [["LIMIT", 11]]
+  ↳ /usr/local/bundle/gems/activerecord-5.2.0/lib/active_record/log_subscriber.rb:98
+NoMethodError (undefined method `to_builder' for #<User::ActiveRecord_Relation:0x00007fcf687a07a8>):
+  
+app/controllers/slackers_controller.rb:4:in `index'
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT  "users".* FROM "users" LIMIT $1[0m  [["LIMIT", 11]]
+  ↳ /usr/local/bundle/gems/activerecord-5.2.0/lib/active_record/log_subscriber.rb:98
+Started GET "/slackers" for 172.23.0.1 at 2018-05-17 14:13:50 +0000
+Processing by SlackersController#index as */*
+  Rendering slackers/index.json.jbuilder
+  Rendered slackers/index.json.jbuilder (2.7ms)
+Completed 200 OK in 12ms (Views: 9.2ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/slackers" for 172.23.0.1 at 2018-05-17 14:14:04 +0000
+Processing by SlackersController#index as */*
+  Rendering slackers/index.json.jbuilder
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/views/slackers/index.json.jbuilder:1
+  Rendered slackers/index.json.jbuilder (135.7ms)
+Completed 500 Internal Server Error in 139ms (ActiveRecord: 3.1ms)
+
+
+  
+ActionView::Template::Error (undefined method `user_id' for #<#<Class:0x0000000004352510>:0x0000000004300328>):
+    1: json.array! @slackers do |user|
+    2:   user_id user.id
+    3:   slack_identifier user.slack_identifier
+    4:   real_name user.real_name
+    5:   slack_hadnle user.slack_handle
+  
+app/views/slackers/index.json.jbuilder:2:in `block in _app_views_slackers_index_json_jbuilder___2388798399039370918_70264423911900'
+app/views/slackers/index.json.jbuilder:1:in `_app_views_slackers_index_json_jbuilder___2388798399039370918_70264423911900'
+app/controllers/slackers_controller.rb:4:in `index'
+Started GET "/slackers" for 172.23.0.1 at 2018-05-17 14:14:37 +0000
+Processing by SlackersController#index as */*
+  Rendering slackers/index.json.jbuilder
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/views/slackers/index.json.jbuilder:1
+  Rendered slackers/index.json.jbuilder (1.8ms)
+Completed 200 OK in 5ms (Views: 4.8ms | ActiveRecord: 0.4ms)
+
+
+Started GET "/slackers" for 172.23.0.1 at 2018-05-17 14:15:19 +0000
+Processing by SlackersController#index as */*
+  Rendering slackers/index.json.jbuilder
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/views/slackers/index.json.jbuilder:1
+  Rendered slackers/index.json.jbuilder (2.1ms)
+Completed 200 OK in 7ms (Views: 6.0ms | ActiveRecord: 0.4ms)
+
+
+Started GET "/slackers" for 172.23.0.1 at 2018-05-17 14:16:19 +0000
+Processing by SlackersController#index as */*
+  Rendering slackers/index.json.jbuilder
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/views/slackers/index.json.jbuilder:1
+  Rendered slackers/index.json.jbuilder (10.0ms)
+Completed 200 OK in 20ms (Views: 10.1ms | ActiveRecord: 3.4ms)
+
+
+  [1m[36mUser Load (1.6ms)[0m  [1m[34mSELECT  "users".* FROM "users" ORDER BY "users"."id" DESC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mChannelStat Load (0.4ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  [1m[36mSlackChannel Load (1.4ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+Started GET "/slackers" for 172.23.0.1 at 2018-05-17 14:20:43 +0000
+Processing by SlackersController#index as */*
+  Rendering slackers/index.json.jbuilder
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/views/slackers/index.json.jbuilder:1
+  [1m[36mChannelStat Load (0.5ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/views/slackers/index.json.jbuilder:8
+  [1m[36mSlackChannel Load (0.4ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/slackers/index.json.jbuilder:9
+  Rendered slackers/index.json.jbuilder (46.8ms)
+Completed 500 Internal Server Error in 55ms (ActiveRecord: 6.8ms)
+
+
+  
+ActionView::Template::Error (Can't merge [{"channel"=>"general", "slack_identifier"=>"G024BE91L", "messages_sent"=>1}] into {"id"=>1, "slack_identifier"=>"U2147483697", "real_name"=>"Cool Guy", "slack_handle"=>"coolguy", "profile_image"=>"https://avatars3.githubusercontent.com/u/6183?s=200&v=4"}):
+     5:                 :real_name,
+     6:                 :slack_handle,
+     7:                 :profile_image)
+     8:   json.array! user.channel_stats do |channel|
+     9:     json.channel channel.slack_channel.name
+    10:     json.slack_identifier channel.slack_channel.slack_identifier
+    11:     json.messages_sent channel.messages_given
+  
+app/views/slackers/index.json.jbuilder:8:in `block in _app_views_slackers_index_json_jbuilder___2388798399039370918_30598820'
+app/views/slackers/index.json.jbuilder:1:in `_app_views_slackers_index_json_jbuilder___2388798399039370918_30598820'
+Started GET "/slackers" for 172.23.0.1 at 2018-05-17 14:21:41 +0000
+Processing by SlackersController#index as */*
+  Rendering slackers/index.json.jbuilder
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/views/slackers/index.json.jbuilder:1
+  [1m[36mChannelStat Load (0.4ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/views/slackers/index.json.jbuilder:8
+  Rendered slackers/index.json.jbuilder (6.1ms)
+Completed 500 Internal Server Error in 13ms (ActiveRecord: 0.7ms)
+
+
+  
+ActionView::Template::Error (Can't merge [{"foo"=>"bar"}] into {"id"=>1, "slack_identifier"=>"U2147483697", "real_name"=>"Cool Guy", "slack_handle"=>"coolguy", "profile_image"=>"https://avatars3.githubusercontent.com/u/6183?s=200&v=4"}):
+     5:                 :real_name,
+     6:                 :slack_handle,
+     7:                 :profile_image)
+     8:   json.array! user.channel_stats do |channel|
+     9:     json.foo 'bar'
+    10:     # json.channel channel.slack_channel.name
+    11:     # json.slack_identifier channel.slack_channel.slack_identifier
+  
+app/views/slackers/index.json.jbuilder:8:in `block in _app_views_slackers_index_json_jbuilder___2388798399039370918_70264423757780'
+app/views/slackers/index.json.jbuilder:1:in `_app_views_slackers_index_json_jbuilder___2388798399039370918_70264423757780'
+Started GET "/slackers" for 172.23.0.1 at 2018-05-17 14:22:23 +0000
+Processing by SlackersController#index as */*
+  Rendering slackers/index.json.jbuilder
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/views/slackers/index.json.jbuilder:1
+  [1m[36mChannelStat Load (0.4ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/views/slackers/index.json.jbuilder:8
+  [1m[36mSlackChannel Load (0.5ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/slackers/index.json.jbuilder:9
+  Rendered slackers/index.json.jbuilder (5.9ms)
+Completed 200 OK in 15ms (Views: 9.2ms | ActiveRecord: 1.2ms)
+
+
+Started GET "/slackers" for 172.23.0.1 at 2018-05-17 14:25:13 +0000
+Processing by SlackersController#index as */*
+  Rendering slackers/index.json.jbuilder
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/views/slackers/index.json.jbuilder:1
+  [1m[36mChannelStat Load (0.4ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/views/slackers/index.json.jbuilder:9
+  [1m[36mSlackChannel Load (0.3ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/slackers/index.json.jbuilder:10
+  Rendered slackers/index.json.jbuilder (31.1ms)
+Completed 200 OK in 42ms (Views: 26.1ms | ActiveRecord: 8.6ms)
+
+
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  [1m[36mChannelStat Load (0.4ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  [1m[36mSlackChannel Load (0.4ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mUser Load (1.7ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  [1m[36mChannelStat Load (1.2ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  [1m[36mSlackChannel Load (1.2ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mUser Load (1.1ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  [1m[36mChannelStat Load (1.1ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  [1m[36mSlackChannel Load (0.9ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mUser Load (1.3ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  [1m[36mChannelStat Load (1.1ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  [1m[36mSlackChannel Load (1.1ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  [1m[36mChannelStat Load (0.4ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  [1m[36mSlackChannel Load (0.4ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mUser Load (1.9ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  [1m[36mChannelStat Load (1.6ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  [1m[36mSlackChannel Load (1.1ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  [1m[36mChannelStat Load (0.3ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  [1m[36mSlackChannel Load (0.3ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mUser Load (1.2ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  [1m[36mChannelStat Load (0.3ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  [1m[36mSlackChannel Load (0.3ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  [1m[36mChannelStat Load (0.3ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  [1m[36mSlackChannel Load (0.3ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  [1m[36mChannelStat Load (0.3ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  [1m[36mSlackChannel Load (0.4ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mUser Load (1.3ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  [1m[36mChannelStat Load (1.0ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  [1m[36mSlackChannel Load (1.1ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+Started GET "/slackers" for 172.23.0.1 at 2018-05-17 14:32:47 +0000
+Processing by SlackersController#index as */*
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:11
+  [1m[36mChannelStat Load (0.3ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:19
+  [1m[36mSlackChannel Load (0.3ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:20
+Completed 200 OK in 37ms (Views: 0.1ms | ActiveRecord: 10.0ms)
+
+
+  [1m[36mChannelStat Load (1.4ms)[0m  [1m[34mSELECT  "channel_stats".* FROM "channel_stats" ORDER BY "channel_stats"."id" DESC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  [1m[36mChannelStat Load (0.3ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  [1m[36mSlackChannel Load (0.3ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  [1m[36mChannelStat Load (0.3ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  [1m[36mSlackChannel Load (0.3ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+Started GET "/slackers" for 172.23.0.1 at 2018-05-17 15:18:50 +0000
+  [1m[35m (1.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  ↳ /usr/local/bundle/gems/activerecord-5.2.0/lib/active_record/log_subscriber.rb:98
+Processing by SlackersController#index as */*
+  [1m[36mUser Load (2.2ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (1.7ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (1.0ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 63ms (Views: 0.1ms | ActiveRecord: 14.7ms)
+
+
+Started GET "/slackers" for 172.23.0.1 at 2018-05-17 15:24:43 +0000
+Processing by SlackersController#index as */*
+  [1m[36mUser Load (1.0ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (1.2ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (0.9ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 16ms (Views: 0.2ms | ActiveRecord: 5.2ms)
+
+
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 16:21:06 +0000
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  ↳ /usr/local/bundle/gems/activerecord-5.2.0/lib/active_record/log_subscriber.rb:98
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (0.6ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (0.8ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 67ms (Views: 0.2ms | ActiveRecord: 12.2ms)
+
+
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 16:21:14 +0000
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (0.8ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (1.0ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (5.2ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 22ms (Views: 0.1ms | ActiveRecord: 7.4ms)
+
+
+Started GET "/slackers" for 172.23.0.1 at 2018-05-17 16:22:26 +0000
+Processing by SlackersController#index as */*
+  [1m[36mUser Load (1.9ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (0.7ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (0.6ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 12ms (Views: 0.1ms | ActiveRecord: 3.2ms)
+
+
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 16:22:44 +0000
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (0.5ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (2.6ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 13ms (Views: 0.2ms | ActiveRecord: 3.6ms)
+
+
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 16:24:30 +0000
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (0.8ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (0.7ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (2.4ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 11ms (Views: 0.2ms | ActiveRecord: 3.8ms)
+
+
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 16:25:18 +0000
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (0.7ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (0.8ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 9ms (Views: 0.2ms | ActiveRecord: 2.1ms)
+
+
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 16:25:24 +0000
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (0.5ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (0.5ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 10ms (Views: 0.1ms | ActiveRecord: 1.6ms)
+
+
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 16:25:53 +0000
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (0.4ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (0.5ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 9ms (Views: 0.1ms | ActiveRecord: 1.5ms)
+
+
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 16:27:39 +0000
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  ↳ /usr/local/bundle/gems/activerecord-5.2.0/lib/active_record/log_subscriber.rb:98
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (0.8ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (0.4ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 87ms (Views: 0.1ms | ActiveRecord: 12.5ms)
+
+
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 16:29:00 +0000
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (0.8ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (0.9ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (1.2ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 13ms (Views: 0.2ms | ActiveRecord: 3.5ms)
+
+
+[ActionCable] Broadcasting to slackerboard_change: {:message=>"foo"}
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 16:37:08 +0000
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (0.9ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (0.6ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (0.7ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 10ms (Views: 0.1ms | ActiveRecord: 2.8ms)
+
+
+[ActionCable] Broadcasting to slackerboard_change: {:message=>"foo"}
+[ActionCable] Broadcasting to slackerboard_change: nil
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 16:39:23 +0000
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (0.5ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (0.5ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 6ms (Views: 0.1ms | ActiveRecord: 1.5ms)
+
+
+[ActionCable] Broadcasting to slackerboard_change: nil
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 16:43:13 +0000
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (0.9ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (0.6ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 8ms (Views: 0.2ms | ActiveRecord: 2.2ms)
+
+
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 16:43:16 +0000
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (0.7ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (0.5ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 7ms (Views: 0.1ms | ActiveRecord: 1.9ms)
+
+
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 16:43:23 +0000
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (0.5ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (0.7ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 7ms (Views: 0.1ms | ActiveRecord: 1.7ms)
+
+
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 16:48:37 +0000
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (0.6ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (1.0ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 10ms (Views: 0.4ms | ActiveRecord: 2.2ms)
+
+
+[ActionCable] Broadcasting to slackerboard_change: nil
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 16:49:57 +0000
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (0.5ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (1.0ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 8ms (Views: 0.1ms | ActiveRecord: 2.1ms)
+
+
+[ActionCable] Broadcasting to slackerboard_change: nil
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 16:53:22 +0000
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (0.8ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (0.8ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (0.4ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 8ms (Views: 0.1ms | ActiveRecord: 2.1ms)
+
+
+[ActionCable] Broadcasting to slackerboard_change: nil
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 16:56:57 +0000
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (0.8ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (0.3ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (0.4ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 7ms (Views: 0.1ms | ActiveRecord: 1.6ms)
+
+
+[ActionCable] Broadcasting to slackerboard_change: nil
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 16:58:31 +0000
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (0.4ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (0.3ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 5ms (Views: 0.1ms | ActiveRecord: 1.2ms)
+
+
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 17:00:30 +0000
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (0.7ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (0.4ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 6ms (Views: 0.1ms | ActiveRecord: 1.5ms)
+
+
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 17:00:38 +0000
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (0.5ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (1.0ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 12ms (Views: 0.2ms | ActiveRecord: 2.3ms)
+
+
+[ActionCable] Broadcasting to slackerboard_change: nil
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 17:00:47 +0000
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (1.2ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (2.2ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 12ms (Views: 0.3ms | ActiveRecord: 3.8ms)
+
+
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 17:00:50 +0000
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (0.6ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (0.4ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 10ms (Views: 0.4ms | ActiveRecord: 1.5ms)
+
+
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 17:00:52 +0000
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (0.4ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (0.4ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 11ms (Views: 0.2ms | ActiveRecord: 1.4ms)
+
+
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 17:00:53 +0000
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (1.3ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (1.3ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (0.5ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 10ms (Views: 0.2ms | ActiveRecord: 3.1ms)
+
+
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 17:06:21 +0000
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (0.4ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (0.4ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 10ms (Views: 0.4ms | ActiveRecord: 1.6ms)
+
+
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 17:06:23 +0000
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (0.5ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (1.0ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 8ms (Views: 0.2ms | ActiveRecord: 1.9ms)
+
+
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 17:07:16 +0000
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (0.4ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (0.4ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 9ms (Views: 0.1ms | ActiveRecord: 1.3ms)
+
+
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 17:07:20 +0000
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (0.5ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (0.6ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 8ms (Views: 0.2ms | ActiveRecord: 1.7ms)
+
+
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 17:07:27 +0000
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (0.5ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (0.4ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 8ms (Views: 0.1ms | ActiveRecord: 1.3ms)
+
+
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 17:07:29 +0000
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (0.5ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (1.4ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 9ms (Views: 0.1ms | ActiveRecord: 2.5ms)
+
+
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 17:08:32 +0000
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (1.0ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (0.5ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 7ms (Views: 0.1ms | ActiveRecord: 2.1ms)
+
+
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 17:09:02 +0000
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (0.4ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (0.4ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 6ms (Views: 0.2ms | ActiveRecord: 1.3ms)
+
+
+[ActionCable] Broadcasting to slackerboard_change: nil
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 17:09:07 +0000
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (0.4ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (0.3ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 6ms (Views: 0.1ms | ActiveRecord: 1.2ms)
+
+
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 17:09:54 +0000
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (0.7ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (0.8ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 10ms (Views: 0.2ms | ActiveRecord: 2.1ms)
+
+
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 17:10:28 +0000
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (0.4ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (0.7ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 7ms (Views: 0.2ms | ActiveRecord: 1.6ms)
+
+
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 17:10:31 +0000
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (0.5ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (0.3ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 6ms (Views: 0.2ms | ActiveRecord: 1.4ms)
+
+
+[ActionCable] Broadcasting to slackerboard_change: nil
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 17:10:50 +0000
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (0.4ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (0.5ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 9ms (Views: 0.1ms | ActiveRecord: 1.5ms)
+
+
+Started GET "/slackers" for 172.23.0.4 at 2018-05-17 17:10:57 +0000
+Processing by SlackersController#index as HTML
+  [1m[36mUser Load (1.2ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/models/slackerboard.rb:13
+  [1m[36mChannelStat Load (0.4ms)[0m  [1m[34mSELECT "channel_stats".* FROM "channel_stats" WHERE "channel_stats"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/models/slackerboard.rb:21
+  [1m[36mSlackChannel Load (0.5ms)[0m  [1m[34mSELECT  "slack_channels".* FROM "slack_channels" WHERE "slack_channels"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/slackerboard.rb:22
+Completed 200 OK in 13ms (Views: 0.2ms | ActiveRecord: 2.1ms)
+
+
