@@ -3,36 +3,37 @@ var app = express();
 var server = require('http').createServer(app);
 var redis = require('redis').createClient('6379', 'redis');
 var io = require('socket.io')(server);
+var slackers = require('./slackers');
 
 app.use(express.static(__dirname + '/node_modules'));
 app.get('/', function(req, res,next) {
   res.sendFile(__dirname + '/index.html');
 });
 
-const slackerboard_change = 'slackerboard_change'
+const slackerboard_change = 'slackerboard_change';
+const slackerboard_init = 'slackerboard_init';
 
 redis.subscribe(slackerboard_change)
 redis.on('message', function(channel, message){
   var info = JSON.parse(message);
   io.sockets.emit(channel, info);
-  console.log('emit '+ channel);
+  console.log('emit ->'+ channel);
 });
 
-io.on('connection', function(client) {
-  console.log('Client connected...');
+io.on('connection', function(socket) {
+  console.log('socket connected...');
 
-  client.on('join', function(data) {
-    console.log(data);
-    client.emit('messages', 'Hello from server');
+  socket.on('join', function(data) {
+    socket.emit(slackerboard_init, slackers);
   });
 
-  client.on('slackerboard_change', function(user){
+  socket.on('slackerboard_change', function(user){
     console.log('slackerboard change!', user)
   });
 
-  client.on('disconnect', function() {
-    console.log('Client disconnected')
-    client.disconnect();
+  socket.on('disconnect', function() {
+    console.log('socket disconnected')
+    socket.disconnect();
   });
 
 });
