@@ -4,6 +4,7 @@ RSpec.describe "Slack Events" do
   let(:payload) { json_data(filename: event_fixture) }
   let(:slack_channel_id) { payload.dig('event', 'channel') }
   let(:user_slack_id) { payload.dig('event', 'user') }
+  let(:reaction_emoji) { payload.dig('event', 'reaction') }
   let(:headers) do
     { "CONTENT_TYPE" => "application/json" }
   end
@@ -73,7 +74,7 @@ RSpec.describe "Slack Events" do
     let(:event_fixture) { 'slack_reaction_added_event' }
 
     it 'increments stat#reactions_given by one' do
-      metric = user.channel_stats.create!(slack_channel_id: channel.id, reactions_given: 1)
+      metric = user.reaction_stats.create!(emoji: reaction_emoji, reactions_given: 1)
       make_request
       metric.reload
       expect(metric.reactions_given).to eq(2)
@@ -85,15 +86,16 @@ RSpec.describe "Slack Events" do
     let(:event_fixture) { 'slack_reaction_removed_event' }
 
     it 'decrements stat#messages_given by one' do
-      metric = user.channel_stats.create!(slack_channel_id: channel.id, reactions_given: 1)
+      metric = user.reaction_stats.create!(emoji: reaction_emoji, reactions_given: 1)
       make_request
       metric.reload
       expect(metric.reactions_given).to eq(0)
     end
 
     context 'when messages_given is 0' do
-      it 'does NOT change stat#messages_given' do
-        metric = user.channel_stats.create!(slack_channel_id: channel.id, reactions_given: 0)
+      it 'does NOT change stat#reactions_given' do
+        metric = user.reaction_stats.create!(emoji: reaction_emoji, reactions_given: 0)
+
         make_request
         expect(metric.reactions_given).to eq(0)
       end

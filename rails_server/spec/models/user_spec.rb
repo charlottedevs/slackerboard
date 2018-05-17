@@ -7,6 +7,7 @@ RSpec.describe User, type: :model do
   real_name
   profile_image
   channel_stats
+  reaction_stats
   slack_channels
   ).each do |attr|
     it "responds_to #{attr}" do

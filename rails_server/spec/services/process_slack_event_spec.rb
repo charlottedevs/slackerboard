@@ -10,13 +10,18 @@ RSpec.describe ProcessSlackEvent do
   let(:channel) { double(:channel, id: 7) }
   let(:user) { double(:user, id: 7) }
   let(:stat) do
-    create(:channel_stat, messages_given: 1, reactions_given: 1)
+    create(:channel_stat, messages_given: 1)
+  end
+
+  let(:reaction_stat) do
+    create(:reaction_stat, reactions_given: 1)
   end
 
   before do
     allow(SlackChannel).to receive(:find_or_create_by).and_return(channel)
     allow(User).to receive(:find_or_create_by).and_return(user)
     allow(ChannelStat).to receive(:find_or_create_by).and_return(stat)
+    allow(ReactionStat).to receive(:find_or_create_by).and_return(reaction_stat)
   end
 
   describe 'find or creating' do
@@ -71,9 +76,9 @@ RSpec.describe ProcessSlackEvent do
       end
 
       it 'does NOT change reactions_given' do
-        original = stat.reactions_given
+        original = reaction_stat.reactions_given
         perform
-        expect(stat.reactions_given).to eq(original)
+        expect(reaction_stat.reactions_given).to eq(original)
       end
 
       context 'when messages_given is nil or 0' do
@@ -90,9 +95,9 @@ RSpec.describe ProcessSlackEvent do
       let(:event_fixture) { 'slack_reaction_added_event' }
 
       it 'adds to stat#reactions_given' do
-        original = stat.reactions_given
+        original = reaction_stat.reactions_given
         perform
-        expect(stat.reactions_given).to eq(original + 1)
+        expect(reaction_stat.reactions_given).to eq(original + 1)
       end
 
       it 'does MOT change messages given' do
@@ -106,9 +111,9 @@ RSpec.describe ProcessSlackEvent do
       let(:event_fixture) { 'slack_reaction_removed_event' }
 
       it 'removes from stat#messages_given' do
-        original = stat.reactions_given
+        original = reaction_stat.reactions_given
         perform
-        expect(stat.reactions_given).to eq(original - 1)
+        expect(reaction_stat.reactions_given).to eq(original - 1)
       end
 
       it 'does NOT change messages_given' do

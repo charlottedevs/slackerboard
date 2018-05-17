@@ -3,6 +3,5 @@ FactoryBot.define do
     slack_channel
     user
     messages_given 1
-    reactions_given 1
   end
 end

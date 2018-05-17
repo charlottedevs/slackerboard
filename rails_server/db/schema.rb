@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_15_140403) do
+ActiveRecord::Schema.define(version: 2018_05_17_200718) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,11 +19,19 @@ ActiveRecord::Schema.define(version: 2018_05_15_140403) do
     t.bigint "slack_channel_id"
     t.bigint "user_id"
     t.integer "messages_given", default: 0
-    t.integer "reactions_given", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["slack_channel_id"], name: "index_channel_stats_on_slack_channel_id"
     t.index ["user_id"], name: "index_channel_stats_on_user_id"
+  end
+
+  create_table "reaction_stats", force: :cascade do |t|
+    t.string "emoji"
+    t.bigint "user_id"
+    t.integer "reactions_given", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_reaction_stats_on_user_id"
   end
 
   create_table "slack_channels", force: :cascade do |t|
@@ -44,4 +52,5 @@ ActiveRecord::Schema.define(version: 2018_05_15_140403) do
 
   add_foreign_key "channel_stats", "slack_channels"
   add_foreign_key "channel_stats", "users"
+  add_foreign_key "reaction_stats", "users"
 end

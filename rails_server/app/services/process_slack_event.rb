@@ -22,9 +22,17 @@ class ProcessSlackEvent
   end
 
   def metric
-    context.stat ||= ChannelStat.find_or_create_by(
-      slack_channel_id: channel.id, user_id: user.id
-    )
+    context.stat ||= init_metric
+  end
+
+  def init_metric
+    if message?
+      ChannelStat.find_or_create_by(
+        slack_channel_id: channel.id, user_id: user.id
+      )
+    else
+      ReactionStat.find_or_create_by(emoji: reaction_emoji, user_id: user.id)
+    end
   end
 
   def channel
@@ -35,6 +43,18 @@ class ProcessSlackEvent
 
   def user
     context.user ||= User.find_or_create_by(slack_identifier: event['user'])
+  end
+
+  def message?
+    message_created? || messaged_delted?
+  end
+
+  def reaction?
+    reaction_given? || reaction_removed?
+  end
+
+  def reaction_emoji
+    event['reaction']
   end
 
   def message_created?
