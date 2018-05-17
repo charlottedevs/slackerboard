@@ -1,20 +1,46 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.min.css"/>
-    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <link rel="stylesheet" href="dist/css/bootstrap.min.css"/>
+    <script src="dist/js/jquery-3.3.1.min.js"></script>
     <script src="dist/js/bootstrap.min.js"></script>
+    <script src="dist/js/vue.js"></script>
   </head>
   <body>
+    <h1>Slackerboard</h1>
 
-    <h1>Hello World!</h1>
-    <div id="future"></div>
-    <form id="form" id="chat_form">
-      <input id="chat_input" type="text">
-      <input type="submit" value="Send">
-    </form>
+    <table class="table table-striped">
+      <tr>
+        <th scope="col"></th>
+        <th scope="col">username</th>
+        <th scope="col">name</th>
+        <th scope="col">latest activity</th>
+        <th scope="col" class="text-center">has reacted with</th>
+        <th scope="col">messages</th>
+      </tr>
+      <tr>
+        <td>
+          1&nbsp;<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Robot_icon.svg/120px-Robot_icon.svg.png" alt="" height="50" width="50"/>
+        </td>
+        <td>@coolguy</td>
+        <td>Cool Guy</td>
+        <td>May 13, 2016</td>
+        <td>
+          cat<span class="badge">42</span>
+          dog<span class="badge">20</span>
+        </td>
+        <td>
+          <a href="#">#general <span class="badge badge-pill badge-secondary">1203</span></a>
+          <a href="#">#random <span class="badge badge-pill badge-secondary">594</span></a>
+          <a href="#">#random <span class="badge badge-pill badge-secondary">594</span></a>
+          <a href="#">#random <span class="badge badge-pill badge-secondary">594</span></a>
+          <a href="#">#random <span class="badge badge-pill badge-secondary">594</span></a>
+          <a href="#">#plan-all-the-things <span class="badge badge-pill badge-secondary">302</span></a>
+        </td>
+      </tr>
+    </table>
+
     <script src="/socket.io/socket.io.js"></script>
-
     <script>
       var socket = io.connect('http://localhost:4200');
       socket.on('connect', function(data) {

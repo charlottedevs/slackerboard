@@ -6,6 +6,7 @@ var io = require('socket.io')(server);
 var slackers = require('./slackers');
 
 app.use(express.static(__dirname + '/node_modules'));
+app.use(express.static(__dirname + '/public'));
 app.get('/', function(req, res,next) {
   res.sendFile(__dirname + '/index.html');
 });
