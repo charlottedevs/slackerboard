@@ -1,4 +1,4 @@
-class FetchUser
+class FetchSlackUser
   include Interactor
   SLACK_API = "https://slack.com/api/users.info"
 
@@ -7,7 +7,7 @@ class FetchUser
       user_data = JSON.parse(res.body).fetch('user') { Hash.new }
       user.real_name = user_data.dig('real_name')
       user.slack_handle = user_data.dig('profile', 'display_name')
-      user.profile_image = user_data.dig('profile', 'image_32')
+      user.profile_image = user_data.dig('profile', 'image_512')
     end
   end
 

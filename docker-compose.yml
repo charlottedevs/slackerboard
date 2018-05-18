@@ -19,6 +19,8 @@ services:
   sidekiq:
     build: rails_server
     command: sidekiq -C config/sidekiq.yml
+    env_file:
+      - rails_server/.env
     volumes:
       - ./rails_server:/home/app/webapp
       - bundle:/usr/local/bundle

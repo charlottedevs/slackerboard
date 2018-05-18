@@ -43,13 +43,11 @@ class ProcessSlackEvent
   end
 
   def channel
-    context.channel ||= SlackChannel.find_or_create_by(
-      slack_identifier: event['channel']
-    )
+    context.channel ||= FetchSlackChannel.call(slack_identifier: event['channel']).channel
   end
 
   def user
-    context.user ||= FetchUser.call(slack_identifier: event['user']).user
+    context.user ||= FetchSlackUser.call(slack_identifier: event['user']).user
   end
 
   def message?

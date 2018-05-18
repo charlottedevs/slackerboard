@@ -1,12 +1,12 @@
 {
   "token": "one-long-verification-token",
   "team_id": "T061EG9R6",
-  "api_app_id": "A0PNCHHK2",
+  "api_app_id": "C4KTX6J4U",
   "event": {
     "type": "message",
     "subtype": "message_deleted",
     "hidden": true,
-    "channel": "C2147483705",
+    "channel": "G024BE91L",
     "ts": "1358878755.000001",
     "deleted_ts": "1358878749.000002"
   },

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe FetchUser do
+RSpec.describe FetchSlackUser do
   subject { described_class }
 
   let(:perform) { subject.call(slack_identifier: slack_identifier) }
@@ -53,7 +53,7 @@ RSpec.describe FetchUser do
       user = perform.user
       expect(user.real_name).to eq(payload.dig('user', 'real_name'))
       expect(user.slack_handle).to eq(payload.dig('user', 'profile', 'display_name'))
-      expect(user.profile_image).to eq(payload.dig('user', 'profile', 'image_32'))
+      expect(user.profile_image).to eq(payload.dig('user', 'profile', 'image_512'))
     end
   end
 end

@@ -35,10 +35,11 @@ ActiveRecord::Schema.define(version: 2018_05_17_200718) do
   end
 
   create_table "slack_channels", force: :cascade do |t|
-    t.string "slack_identifier"
-    t.string "name"
+    t.string "slack_identifier", null: false
+    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["slack_identifier"], name: "index_slack_channels_on_slack_identifier"
   end
 
   create_table "users", force: :cascade do |t|

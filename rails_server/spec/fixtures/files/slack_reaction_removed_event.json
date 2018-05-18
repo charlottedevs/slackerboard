@@ -4,10 +4,10 @@
   "api_app_id": "A0FFV41KK",
   "event": {
     "type": "reaction_removed",
-    "user": "U061F1EUR",
+    "user": "U8QPHNUBV",
     "item": {
       "type": "message",
-      "channel": "C061EG9SL",
+      "channel": "C4KTX6J4U",
       "ts": "1464196127.000002"
     },
     "reaction": "slightly_smiling_face",

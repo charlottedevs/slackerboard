@@ -18,13 +18,18 @@ RSpec.describe ProcessSlackEvent do
     double(:user_fetch_result, user: user)
   end
 
+
+  let(:channel_fetch_result) do
+    double(:channel_fetch_result, channel: channel)
+  end
+
   let(:reaction_stat) do
     create(:reaction_stat, reactions_given: 1)
   end
 
   before do
-    allow(SlackChannel).to receive(:find_or_create_by).and_return(channel)
-    allow(FetchUser).to receive(:call).and_return(user_fetch_result)
+    allow(FetchSlackUser).to receive(:call).and_return(user_fetch_result)
+    allow(FetchSlackChannel).to receive(:call).and_return(channel_fetch_result)
     allow(ChannelStat).to receive(:find_or_create_by).and_return(stat)
     allow(ReactionStat).to receive(:find_or_create_by).and_return(reaction_stat)
     allow(Rails).to receive(:cache).and_return cache
@@ -39,15 +44,15 @@ RSpec.describe ProcessSlackEvent do
   end
 
   describe 'find or creating' do
-    it 'creates a slack channel if not existant' do
-      expect(SlackChannel).to receive(:find_or_create_by).with(
+    it 'calls on FetchSlackChannel' do
+      expect(FetchSlackChannel).to receive(:call).with(
         slack_identifier: slack_channel_id
       )
       perform
     end
 
-    it 'calls on FetchUser' do
-      expect(FetchUser).to receive(:call).with(slack_identifier: user_slack_id)
+    it 'calls on FetchSlackUser' do
+      expect(FetchSlackUser).to receive(:call).with(slack_identifier: user_slack_id)
       perform
     end
 
