@@ -53,7 +53,7 @@ RSpec.describe "Slack Events" do
     it_behaves_like 'slackerboard_change'
   end
 
-  describe 'message deleted event' do
+  xdescribe 'message deleted event' do
     let(:event_fixture) { 'slack_message_deleted_event' }
 
     it 'decrements stat#messages_given by one' do
@@ -64,7 +64,7 @@ RSpec.describe "Slack Events" do
     end
 
 
-    it_behaves_like 'slackerboard_update'
+    it_behaves_like 'slackerboard_change'
 
     context 'when messages_given is 0' do
       it 'does NOT change stat#messages_given' do
@@ -85,7 +85,7 @@ RSpec.describe "Slack Events" do
       expect(metric.reactions_given).to eq(2)
     end
 
-    it_behaves_like 'slackerboard_update'
+    it_behaves_like 'slackerboard_change'
   end
 
 
@@ -100,7 +100,7 @@ RSpec.describe "Slack Events" do
     end
 
 
-    it_behaves_like 'slackerboard_update'
+    it_behaves_like 'slackerboard_change'
 
     context 'when messages_given is 0' do
       it 'does NOT change stat#reactions_given' do

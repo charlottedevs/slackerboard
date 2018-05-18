@@ -10,7 +10,7 @@ class ProcessSlackEvent
       if event['user']
         update_stat!(:messages_given, -1)
       else
-        Rails.logger.log 'cannot handle deleted messages'
+        Rails.logger.info 'cannot handle deleted messages'
       end
     elsif reaction_given?
       update_stat!(:reactions_given, 1)
@@ -49,7 +49,7 @@ class ProcessSlackEvent
   end
 
   def user
-    context.user ||= User.find_or_create_by(slack_identifier: event['user'])
+    context.user ||= FetchUser.call(slack_identifier: event['user']).user
   end
 
   def message?

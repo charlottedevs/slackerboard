@@ -14,13 +14,17 @@ RSpec.describe ProcessSlackEvent do
     create(:channel_stat, messages_given: 1)
   end
 
+  let(:user_fetch_result) do
+    double(:user_fetch_result, user: user)
+  end
+
   let(:reaction_stat) do
     create(:reaction_stat, reactions_given: 1)
   end
 
   before do
     allow(SlackChannel).to receive(:find_or_create_by).and_return(channel)
-    allow(User).to receive(:find_or_create_by).and_return(user)
+    allow(FetchUser).to receive(:call).and_return(user_fetch_result)
     allow(ChannelStat).to receive(:find_or_create_by).and_return(stat)
     allow(ReactionStat).to receive(:find_or_create_by).and_return(reaction_stat)
     allow(Rails).to receive(:cache).and_return cache
@@ -42,11 +46,8 @@ RSpec.describe ProcessSlackEvent do
       perform
     end
 
-
-    it 'creates a user if not existant' do
-      expect(User).to receive(:find_or_create_by).with(
-        slack_identifier: user_slack_id
-      )
+    it 'calls on FetchUser' do
+      expect(FetchUser).to receive(:call).with(slack_identifier: user_slack_id)
       perform
     end
 
@@ -76,7 +77,7 @@ RSpec.describe ProcessSlackEvent do
       end
     end
 
-    context 'message removed event' do
+    xcontext 'message removed event' do
       let(:event_fixture) { 'slack_message_deleted_event' }
 
       it 'removes from stat#messages_given' do

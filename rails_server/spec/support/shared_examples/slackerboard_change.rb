@@ -1,9 +1,9 @@
-RSpec.shared_examples 'slackerboard_update' do
-  it 'makes a broadcast to slackerboard_update' do
+RSpec.shared_examples 'slackerboard_change' do
+  it 'makes a broadcast to slackerboard_change' do
     slackerboard = double(:slackerboard)
     allow(Slackerboard).to receive(:new).and_return slackerboard
     expect(ActionCable.server).to receive(:broadcast).with(
-      'slackerboard_update', slackerboard: slackerboard
+      'slackerboard_change', slackerboard: slackerboard
     )
     make_request
   end
