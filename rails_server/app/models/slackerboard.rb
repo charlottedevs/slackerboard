@@ -10,7 +10,7 @@ class Slackerboard
 
     def to_builder
       Jbuilder.new do |json|
-        json.array! User.all do |user|
+        json.array! User.slackers do |user|
           json.extract!(user,
                         :id,
                         :slack_identifier,

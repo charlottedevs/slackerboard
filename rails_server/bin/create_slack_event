@@ -1,0 +1,34 @@
+#!/usr/bin/env ruby
+require 'rubygems'
+require 'bundler/setup'
+require 'faraday'
+
+APP_ROOT = File.expand_path('..', __dir__)
+
+filename = case ARGV[0] # event arg
+           when 'challenge_event'
+             'challenge_event.json'
+           when 'message_created'
+             'slack_message_created_event.json'
+           when 'message_deleted'
+             'slack_message_deleted_event.json'
+           when 'reaction_added'
+             'slack_reaction_added_event.json'
+           when 'reaction_removed'
+             'slack_reaction_removed_event.json'
+           else
+             puts "#{ARGV[0]} is not a registered event"
+           end
+
+fixture = File.join(APP_ROOT, 'spec', 'fixtures', 'files', filename)
+json = File.read(fixture)
+
+conn = Faraday.new('http://rails_server:5000')
+
+res = conn.post do |req|
+  req.url '/slack/events'
+  req.headers['Content-Type'] = 'application/json'
+  req.body = json
+end
+
+puts res.body

@@ -4,15 +4,23 @@ RSpec.describe Slackerboard do
   let(:user) { create(:user) }
   let(:channel_stat) { create(:channel_stat, user: user) }
   let(:reaction_stat) { create(:reaction_stat, user: user) }
+  let(:obj) { subject.sample }
 
   before do
     channel_stat
     reaction_stat
   end
 
-  describe 'keys' do
-    let(:obj) { subject.sample }
+  describe 'users with stats that have a count of 0' do
+    let(:channel_stat) { create(:channel_stat, user: user, messages_given: 0) }
+    let(:reaction_stat) { create(:reaction_stat, user: user, reactions_given: 0) }
 
+    it 'does NOT include user in result' do
+      expect(subject).to be_empty
+    end
+  end
+
+  describe 'keys' do
     %w(id slack_identifier real_name slack_handle profile_image messages reactions).each do |k|
       it "has #{k}" do
         expect(obj).to have_key k
