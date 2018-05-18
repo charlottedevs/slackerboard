@@ -18,13 +18,13 @@ class Slackerboard
                         :slack_handle,
                         :profile_image)
 
-          json.messages user.channel_stats do |channel|
+          json.messages user.channel_stats.where('messages_given > ?', 0) do |channel|
             json.channel channel.slack_channel.name
             json.slack_identifier channel.slack_channel.slack_identifier
             json.messages_sent channel.messages_given
           end
 
-          json.reactions user.reaction_stats do |reaction|
+          json.reactions user.reaction_stats.where('reactions_given > ?', 0) do |reaction|
             json.emoji reaction.emoji
             json.reactions_given reaction.reactions_given
           end

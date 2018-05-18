@@ -1,6 +1,8 @@
 class ProcessSlackEvent
   include Interactor
 
+  SLACKERBOARD_CACHE = 'slackerboard'.freeze
+
   def call
     if message_created?
       update_stat!(:messages_given, 1)
@@ -19,6 +21,7 @@ class ProcessSlackEvent
     result = metric.send(attr) + delta
     return unless result >= 0 # no going into debt
     metric.update!(attr => result)
+    Rails.cache.delete(SLACKERBOARD_CACHE)
   end
 
   def metric

@@ -1,6 +1,5 @@
 class SlackersController < ApplicationController
-
   def index
-    render json: Slackerboard.new.to_json
+    render json: { slackerboard: Slackerboard.new.to_json }
   end
 end

@@ -9,6 +9,7 @@ RSpec.describe ProcessSlackEvent do
   let(:user_slack_id) { payload.dig('event', 'user') }
   let(:channel) { double(:channel, id: 7) }
   let(:user) { double(:user, id: 7) }
+  let(:cache) { double(:cache) }
   let(:stat) do
     create(:channel_stat, messages_given: 1)
   end
@@ -22,6 +23,15 @@ RSpec.describe ProcessSlackEvent do
     allow(User).to receive(:find_or_create_by).and_return(user)
     allow(ChannelStat).to receive(:find_or_create_by).and_return(stat)
     allow(ReactionStat).to receive(:find_or_create_by).and_return(reaction_stat)
+    allow(Rails).to receive(:cache).and_return cache
+    allow(cache).to receive(:delete)
+  end
+
+  describe 'rails cache' do
+    it 'busts the cache "slackerboard"' do
+      expect(cache).to receive(:delete).with('slackerboard')
+      perform
+    end
   end
 
   describe 'find or creating' do

@@ -55,6 +55,8 @@ GEM
     factory_bot_rails (4.8.2)
       factory_bot (~> 4.8.2)
       railties (>= 3.0.0)
+    faraday (0.15.1)
+      multipart-post (>= 1.2, < 3)
     ffi (1.9.23)
     formatador (0.2.5)
     globalid (0.4.1)
@@ -97,6 +99,7 @@ GEM
     mini_portile2 (2.3.0)
     minitest (5.11.3)
     multi_json (1.13.1)
+    multipart-post (2.0.0)
     nenv (0.3.0)
     nio4r (2.3.1)
     nokogiri (1.8.2)
@@ -199,6 +202,7 @@ PLATFORMS
 
 DEPENDENCIES
   factory_bot_rails
+  faraday
   guard-rspec
   interactor (~> 3.0)
   jbuilder (~> 2.5)
