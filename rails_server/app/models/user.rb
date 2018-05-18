@@ -4,7 +4,9 @@ class User < ApplicationRecord
   has_many :slack_channels, through: :channel_stats
 
   def self.slackers
-    joins(:channel_stats, :reaction_stats)
-      .where("channel_stats.messages_given > ? OR reaction_stats.reactions_given > ?", 0, 0)
+    left_outer_joins(:channel_stats, :reaction_stats)
+      .where('channel_stats.messages_given > ? OR reaction_stats.reactions_given > ?', 1, 0)
+      .group(:id)
+      .order('sum(channel_stats.messages_given) ASC')
   end
 end

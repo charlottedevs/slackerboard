@@ -21,6 +21,7 @@ services:
       - ./rails_server:/home/app/webapp
       - bundle:/usr/local/bundle
     links:
+      - postgres
       - redis
 
   socket_io:

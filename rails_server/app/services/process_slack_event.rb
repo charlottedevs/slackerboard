@@ -7,7 +7,11 @@ class ProcessSlackEvent
     if message_created?
       update_stat!(:messages_given, 1)
     elsif message_deleted?
-      update_stat!(:messages_given, -1)
+      if event['user']
+        update_stat!(:messages_given, -1)
+      else
+        Rails.logger.log 'cannot handle deleted messages'
+      end
     elsif reaction_given?
       update_stat!(:reactions_given, 1)
     elsif reaction_removed?

@@ -50,7 +50,7 @@ RSpec.describe "Slack Events" do
       expect(metric.messages_given).to eq(2)
     end
 
-    it_behaves_like 'slackerboard_update'
+    it_behaves_like 'slackerboard_change'
   end
 
   describe 'message deleted event' do
