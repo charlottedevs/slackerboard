@@ -20,6 +20,7 @@ RSpec.describe "reaction removed" do
   before do
     # setup
     reaction
+    allow_any_instance_of(Slack::EventsController).to receive(:verify!).and_return(true)
   end
 
   let(:slack_identifier) { payload.dig('event', 'item', 'ts') }

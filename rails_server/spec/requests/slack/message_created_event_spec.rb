@@ -18,6 +18,7 @@ RSpec.describe "Slack Events" do
     # setup
     user
     channel
+    allow_any_instance_of(Slack::EventsController).to receive(:verify!).and_return(true)
   end
 
   let(:event_fixture) { 'slack_message_created_event' }

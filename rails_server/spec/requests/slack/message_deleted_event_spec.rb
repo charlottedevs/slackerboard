@@ -21,6 +21,7 @@ RSpec.describe "slack message deleted" do
   before do
     # setup
     message
+    allow_any_instance_of(Slack::EventsController).to receive(:verify!).and_return(true)
   end
 
   let(:event_fixture) { 'slack_message_deleted_event' }
