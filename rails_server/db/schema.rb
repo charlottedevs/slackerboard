@@ -10,29 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_17_200718) do
+ActiveRecord::Schema.define(version: 2018_05_20_100217) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "channel_stats", force: :cascade do |t|
-    t.bigint "slack_channel_id"
-    t.bigint "user_id"
-    t.integer "messages_given", default: 0
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["slack_channel_id"], name: "index_channel_stats_on_slack_channel_id"
-    t.index ["user_id"], name: "index_channel_stats_on_user_id"
-  end
-
-  create_table "reaction_stats", force: :cascade do |t|
-    t.string "emoji"
-    t.bigint "user_id"
-    t.integer "reactions_given", default: 0
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_reaction_stats_on_user_id"
-  end
 
   create_table "slack_channels", force: :cascade do |t|
     t.string "slack_identifier", null: false
@@ -40,6 +21,29 @@ ActiveRecord::Schema.define(version: 2018_05_17_200718) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["slack_identifier"], name: "index_slack_channels_on_slack_identifier"
+  end
+
+  create_table "slack_messages", force: :cascade do |t|
+    t.bigint "slack_channel_id"
+    t.bigint "user_id"
+    t.string "ts"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["slack_channel_id"], name: "index_slack_messages_on_slack_channel_id"
+    t.index ["user_id"], name: "index_slack_messages_on_user_id"
+  end
+
+  create_table "slack_reactions", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "emoji", null: false
+    t.string "target", null: false
+    t.string "slack_identifier", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["emoji"], name: "index_slack_reactions_on_emoji"
+    t.index ["slack_identifier"], name: "index_slack_reactions_on_slack_identifier"
+    t.index ["target"], name: "index_slack_reactions_on_target"
+    t.index ["user_id"], name: "index_slack_reactions_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -51,7 +55,7 @@ ActiveRecord::Schema.define(version: 2018_05_17_200718) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "channel_stats", "slack_channels"
-  add_foreign_key "channel_stats", "users"
-  add_foreign_key "reaction_stats", "users"
+  add_foreign_key "slack_messages", "slack_channels"
+  add_foreign_key "slack_messages", "users"
+  add_foreign_key "slack_reactions", "users"
 end

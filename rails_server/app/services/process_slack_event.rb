@@ -4,41 +4,74 @@ class ProcessSlackEvent
   SLACKERBOARD_CACHE = 'slackerboard'.freeze
 
   def call
-    if message_created?
-      update_stat!(:messages_given, 1)
-    elsif message_deleted?
-      if event['user']
-        update_stat!(:messages_given, -1)
-      else
-        Rails.logger.info 'cannot handle deleted messages'
-      end
-    elsif reaction_given?
-      update_stat!(:reactions_given, 1)
-    elsif reaction_removed?
-      update_stat!(:reactions_given, -1)
-    end
+    process
+    Rails.cache.delete(SLACKERBOARD_CACHE)
+  rescue => error
+    context.fail!(error: error.message)
   end
 
   private
 
-  def update_stat!(attr, delta)
-    result = metric.send(attr) + delta
-    return unless result >= 0 # no going into debt
-    metric.update!(attr => result)
-    Rails.cache.delete(SLACKERBOARD_CACHE)
+  def process
+    if message_created?
+      create_message
+    elsif message_deleted?
+      destroy_message
+    elsif reaction_given?
+      create_reaction
+    elsif reaction_removed?
+      destroy_reaction
+    end
   end
 
-  def metric
-    context.stat ||= init_metric
+  def create_message
+    SlackMessage.create(
+      user_id: user.id,
+      slack_channel_id: channel.id,
+      ts: ts
+    )
   end
 
-  def init_metric
-    if message?
-      ChannelStat.find_or_create_by(
-        slack_channel_id: channel.id, user_id: user.id
-      )
+  def destroy_message
+    SlackMessage.where(ts: ts).destroy_all
+  end
+
+  def create_reaction
+    SlackReaction.create(
+      user_id: user.id,
+      emoji: emoji,
+      target: type,
+      slack_identifier: slack_identifier
+    )
+  end
+
+  def destroy_reaction
+    SlackReaction.where(slack_identifier: slack_identifier).destroy_all
+  end
+
+  def ts
+    event['ts']
+  end
+
+  def emoji
+    event['reaction']
+  end
+
+  def type
+    event.dig('item', 'type')
+  end
+
+  def slack_identifier
+    event.dig('item', identifier_key)
+  end
+
+  def identifier_key
+    case type
+    when 'message' then 'ts'
+    when 'file' then 'file'
+    when 'file_comment' then 'file_comment'
     else
-      ReactionStat.find_or_create_by(emoji: reaction_emoji, user_id: user.id)
+      raise "unknown reaction type: #{type}"
     end
   end
 

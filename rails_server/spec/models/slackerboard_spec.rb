@@ -2,21 +2,23 @@ require 'rails_helper'
 
 RSpec.describe Slackerboard do
   let(:user) { create(:user) }
-  let(:channel_stat) { create(:channel_stat, user: user) }
-  let(:reaction_stat) { create(:reaction_stat, user: user) }
+  let(:slack_message) { create(:slack_message, user: user) }
+  let(:slack_reaction) { create(:slack_reaction, user: user) }
   let(:obj) { subject.sample }
 
   before do
-    channel_stat
-    reaction_stat
+    slack_message
+    slack_reaction
   end
 
   describe 'users with stats that have a count of 0' do
-    let(:channel_stat) { create(:channel_stat, user: user, messages_given: 0) }
-    let(:reaction_stat) { create(:reaction_stat, user: user, reactions_given: 0) }
+    let(:lurker) { create(:user) }
 
     it 'does NOT include user in result' do
-      expect(subject).to be_empty
+      expect(lurker.slack_reactions).to be_empty
+      expect(lurker.slack_messages).to be_empty
+      ids = subject.map { |hsh| hsh['id'] }
+      expect(ids).to_not include(lurker.id)
     end
   end
 
@@ -34,14 +36,6 @@ RSpec.describe Slackerboard do
           expect(message).to have_key k
         end
       end
-
-      context 'when a stat happens to be 0' do
-        let(:channel_stat) { create(:channel_stat, user: user, messages_given: 0) }
-
-        it 'does NOT include in slackerboard' do
-          expect(obj['messages']).to be_empty
-        end
-      end
     end
 
     describe 'reactions' do
@@ -49,14 +43,6 @@ RSpec.describe Slackerboard do
         it "has #{k}" do
           reaction = obj.fetch('reactions').sample
           expect(reaction).to have_key k
-        end
-      end
-
-      context 'when a stat happens to be 0' do
-        let(:reaction_stat) { create(:reaction_stat, user: user, reactions_given: 0) }
-
-        it 'does NOT include in slackerboard' do
-          expect(obj['reactions']).to be_empty
         end
       end
     end

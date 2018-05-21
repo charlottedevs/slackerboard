@@ -3,12 +3,12 @@
   "team_id": "T061EG9RZ",
   "api_app_id": "A0FFV41KK",
   "event": {
-    "type": "reaction_removed",
+    "type": "reaction_added",
     "user": "U8QPHNUBV",
     "item": {
-      "type": "message",
-      "channel": "C4KTX6J4U",
-      "ts": "1464196127.000002"
+      "type": "file_comment",
+      "file_comment": "Fc0HS2KBEZ",
+      "file": "F0HS27V1Z"
     },
     "reaction": "slightly_smiling_face",
     "item_user": "U0M4RL1NY",

@@ -1,9 +1,13 @@
 class User < ApplicationRecord
-  has_many :channel_stats
-  has_many :reaction_stats
-  has_many :slack_channels, through: :channel_stats
+  has_many :slack_messages
+  has_many :slack_reactions
+  has_many :slack_channels, through: :slack_messages
 
   def self.slackers
-    left_outer_joins(:channel_stats, :reaction_stats).where('channel_stats.messages_given > ? OR reaction_stats.reactions_given > ?', 0, 0).group(:id).order(Arel.sql 'SUM(channel_stats.messages_given) ASC')
+    User.left_outer_joins(:slack_messages, :slack_reactions)
+        .group('users.id')
+        .having('count(slack_messages.user_id) > 0 OR count(slack_reactions.user_id) > 0')
+        .group(:id)
+        .order(Arel.sql 'count(slack_messages.user_id) DESC')
   end
 end

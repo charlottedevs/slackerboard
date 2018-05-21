@@ -7,12 +7,11 @@ RSpec.describe ProcessSlackEvent do
   let(:event_fixture) { 'slack_message_created_event' }
   let(:slack_channel_id) { payload.dig('event', 'channel') }
   let(:user_slack_id) { payload.dig('event', 'user') }
-  let(:channel) { double(:channel, id: 7) }
+  let(:channel) { double(:channel, id: slack_channel_id) }
+  let(:reaction) { double(:reaction) }
   let(:user) { double(:user, id: 7) }
   let(:cache) { double(:cache) }
-  let(:stat) do
-    create(:channel_stat, messages_given: 1)
-  end
+  let(:event) { payload['event'] }
 
   let(:user_fetch_result) do
     double(:user_fetch_result, user: user)
@@ -30,10 +29,18 @@ RSpec.describe ProcessSlackEvent do
   before do
     allow(FetchSlackUser).to receive(:call).and_return(user_fetch_result)
     allow(FetchSlackChannel).to receive(:call).and_return(channel_fetch_result)
-    allow(ChannelStat).to receive(:find_or_create_by).and_return(stat)
-    allow(ReactionStat).to receive(:find_or_create_by).and_return(reaction_stat)
+    allow(SlackReaction).to receive(:create)
     allow(Rails).to receive(:cache).and_return cache
     allow(cache).to receive(:delete)
+  end
+
+  describe 'error handling' do
+    it 'returns error in result' do
+      allow(Rails).to receive(:cache).and_raise 'BOOM'
+      result = perform
+      expect(result.error).to eq('BOOM')
+      expect(result).to be_a_failure
+    end
   end
 
   describe 'rails cache' do
@@ -55,97 +62,82 @@ RSpec.describe ProcessSlackEvent do
       expect(FetchSlackUser).to receive(:call).with(slack_identifier: user_slack_id)
       perform
     end
+  end
 
-    it 'creates a channel stat for that channel if not existant' do
-      expect(ChannelStat).to receive(:find_or_create_by).with(
-        slack_channel_id: channel.id,
+  describe 'message created event' do
+    let(:event_fixture) { 'slack_message_created_event' }
+    let(:ts) { event['ts'] }
+
+    it 'creates a SlackMessage' do
+      expect(SlackMessage).to receive(:create).with(
         user_id: user.id,
+        slack_channel_id: slack_channel_id,
+        ts: ts
       )
+
+      perform
+    end
+
+  end
+
+  context 'message removed event' do
+    let(:event_fixture) { 'slack_message_deleted_event' }
+    let(:ts) { event.fetch('ts') }
+    let(:messages) { double(:messages) }
+
+    it 'destroys the SlackMessage' do
+      expect(SlackMessage).to receive(:where).with(ts: ts).and_return messages
+      expect(messages).to receive(:destroy_all)
       perform
     end
   end
 
-  describe 'changing stats' do
-    context 'message created event' do
-      let(:event_fixture) { 'slack_message_created_event' }
+  describe 'reaction given event' do
+    let(:emoji) { event['reaction'] }
+    let(:type) { event.dig('item', 'type') }
 
-      it 'adds to stat#messages_given' do
-        original = stat.messages_given
-        perform
-        expect(stat.messages_given).to eq(original + 1)
-      end
+    context 'message reaction' do
+      let(:event_fixture) { 'slack_message_reaction_added_event' }
+      let(:slack_identifier) { event.dig('item', 'ts') }
 
-      it 'does NOT change reactions_given' do
-        expect(stat).to_not receive(:decrement!).with(:reactions_given)
-        expect(stat).to_not receive(:increment!).with(:reactions_given)
-        perform
-      end
+      it_behaves_like 'reaction added'
     end
 
-    xcontext 'message removed event' do
-      let(:event_fixture) { 'slack_message_deleted_event' }
+    context 'file reaction' do
+      let(:event_fixture) { 'slack_file_reaction_added_event' }
+      let(:slack_identifier) { event.dig('item', 'file') }
 
-      it 'removes from stat#messages_given' do
-        original = stat.messages_given
-        perform
-        expect(stat.messages_given).to eq(original - 1)
-      end
-
-      it 'does NOT change reactions_given' do
-        original = reaction_stat.reactions_given
-        perform
-        expect(reaction_stat.reactions_given).to eq(original)
-      end
-
-      context 'when messages_given is nil or 0' do
-        let(:stat) { double(:stat, messages_given: 0) }
-
-        it 'does not decrement into negative numbers' do
-          expect(stat).to_not receive(:decrement!).with(:messages_given)
-          perform
-        end
-      end
+      it_behaves_like 'reaction added'
     end
 
-    context 'reaction given event' do
-      let(:event_fixture) { 'slack_reaction_added_event' }
+    context 'file comment reaction' do
+      let(:event_fixture) { 'slack_file_comment_reaction_added_event' }
+      let(:slack_identifier) { event.dig('item', 'file_comment') }
 
-      it 'adds to stat#reactions_given' do
-        original = reaction_stat.reactions_given
-        perform
-        expect(reaction_stat.reactions_given).to eq(original + 1)
-      end
+      it_behaves_like 'reaction added'
+    end
+  end
 
-      it 'does MOT change messages given' do
-        original = stat.messages_given
-        perform
-        expect(stat.messages_given).to eq(original)
-      end
+  describe 'reaction removed event' do
+    context 'message reaction removed' do
+      let(:event_fixture) { 'slack_message_reaction_removed_event' }
+      let(:slack_identifier) { event.dig('item', 'ts') }
+
+      it_behaves_like 'reaction removed'
     end
 
-    context 'reaction removed event' do
-      let(:event_fixture) { 'slack_reaction_removed_event' }
+    context 'file reaction removed' do
+      let(:event_fixture) { 'slack_file_reaction_removed_event' }
+      let(:slack_identifier) { event.dig('item', 'file') }
 
-      it 'removes from stat#messages_given' do
-        original = reaction_stat.reactions_given
-        perform
-        expect(reaction_stat.reactions_given).to eq(original - 1)
-      end
+      it_behaves_like 'reaction removed'
+    end
 
-      it 'does NOT change messages_given' do
-        original = stat.messages_given
-        perform
-        expect(stat.messages_given).to eq(original)
-      end
+    context 'file comment reaction removed' do
+      let(:event_fixture) { 'slack_file_comment_reaction_removed_event' }
+      let(:slack_identifier) { event.dig('item', 'file_comment') }
 
-      context 'when reactions_given is NOT positive' do
-        let(:stat) { double(:stat, reactions_given: 0) }
-
-        it 'does not decrement into negative numbers' do
-          expect(stat).to_not receive(:decrement!).with(:reactions_given)
-          perform
-        end
-      end
+      it_behaves_like 'reaction removed'
     end
   end
 end
