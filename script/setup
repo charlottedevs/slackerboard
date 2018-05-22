@@ -1,0 +1,48 @@
+#!/bin/bash
+
+set -e
+
+# ensure we're at project root
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
+cd "$DIR/.."
+
+title() {
+  echo "---> $*"
+}
+
+info() {
+  echo "+ $*"
+}
+
+step() {
+  title "$*"
+  eval "$*" || abort "$*"
+  info "=> OK"
+}
+
+abort() {
+  info "!!! FAILED: '$*'" >&2
+  exit 1
+}
+
+info 'checking docker-compose is installed'
+step docker-compose --version
+
+info 'checking docker is installed'
+step docker -v
+
+info 'building services (this might take a while)'
+step docker-compose build
+
+info 'setting up db'
+step docker-compose run --rm rails_server bin/setup
+
+info 'running example service'
+step docker-compose up example_service
+
+title 'setup complete'
+
+echo
+echo 'start up the entire stack by running: `docker-compose up`'
+echo 'application will be available on localhost:80'
+
