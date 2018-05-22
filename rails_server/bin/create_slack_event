@@ -2,6 +2,8 @@
 require 'rubygems'
 require 'bundler/setup'
 require 'faraday'
+require 'json'
+require 'dotenv/load'
 
 APP_ROOT = File.expand_path('..', __dir__)
 
@@ -16,13 +18,15 @@ unless File.exist? fixture
 end
 
 json = File.read(fixture)
+payload = JSON.parse(json)
+payload['token'] = ENV.fetch('SLACK_VERIFICATION_TOKEN')
 
 conn = Faraday.new('http://rails_server:5000')
 
 res = conn.post do |req|
   req.url '/slack/events'
   req.headers['Content-Type'] = 'application/json'
-  req.body = json
+  req.body = payload.to_json
 end
 
 puts res.body
