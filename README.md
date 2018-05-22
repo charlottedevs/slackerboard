@@ -15,9 +15,9 @@ script/setup
 ```
 
 ### Steps to create a new service
-1) create a new directory: `<yourservice>`
+1) create a new directory: `services/<yourservice>`
 2) get your code working locally without Docker
 3) create a Dockerfile that includes all necessary operating system dependencies
-  - see: [example service](example_service)
+  - see: [services/example service](services/example_service)
 4) add service to [docker-compose.yml](docker-compose.yml)
 5) run service with docker via `docker-compose up <yourservice>`
