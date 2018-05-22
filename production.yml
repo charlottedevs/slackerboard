@@ -7,10 +7,12 @@ services:
       - socket_io
     volumes:
       - ./services/nginx/prod/nginx.conf:/etc/nginx/nginx.conf
+      - ./services/nginx/prod/ssl.conf:/etc/nginx/ssl.conf
       - /etc/letsencrypt:/etc/letsencrypt
       - /tmp/letsencrypt/www:/tmp/letsencrypt/www
     ports:
       - 80:80
+      - 443:443
 
   rails_server:
     build: services/rails_server
@@ -31,7 +33,7 @@ services:
     build: services/example_service
     command: python3 main.py
     volumes:
-      - ./services//example_service:/code
+      - ./services/example_service:/code
     links:
       - redis
 
