@@ -13,6 +13,7 @@ services:
     ports:
       - 80:80
       - 443:443
+      - 4200:4200
 
   rails_server:
     build: services/rails_server
