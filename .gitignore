@@ -28,3 +28,4 @@ tmp
 .env
 node_modules
 log
+spec/examples.txt
