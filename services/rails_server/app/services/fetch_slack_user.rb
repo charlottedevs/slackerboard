@@ -5,8 +5,9 @@ class FetchSlackUser
   def call
     context.user = User.find_or_create_by(slack_identifier: slack_identifier) do |user|
       user_data = JSON.parse(res.body).fetch('user')
-      user.real_name = user_data.dig('real_name')
-      user.slack_handle = user_data.dig('profile', 'display_name')
+
+      user.real_name = user_data['real_name']
+      user.slack_handle = user_data['name']
       user.profile_image = user_data.dig('profile', 'image_512')
     end
   end
