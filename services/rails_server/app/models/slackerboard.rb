@@ -46,8 +46,8 @@ class Slackerboard
            r.emoji
            ,(
              SELECT COUNT(*)
-             FROM slack_reactions r
-             WHERE r.user_id = #{user.id}
+             FROM slack_reactions sr
+             WHERE sr.user_id = #{user.id}  AND r.emoji = sr.emoji
            ) AS reactions_given
           FROM slack_reactions r
           JOIN users u ON r.user_id = u.id
@@ -63,8 +63,8 @@ class Slackerboard
       ,c.slack_identifier
       ,(
         SELECT COUNT(*)
-        FROM slack_messages m
-        WHERE m.slack_channel_id = c.id
+        FROM slack_messages sm
+        WHERE sm.user_id = #{user.id} AND sm.slack_channel_id = c.id
       ) AS messages_sent
       FROM slack_messages m
       JOIN users u ON m.user_id = u.id
