@@ -35,12 +35,14 @@ ActiveRecord::Schema.define(version: 2018_05_20_100217) do
 
   create_table "slack_reactions", force: :cascade do |t|
     t.bigint "user_id"
+    t.bigint "slack_channel_id"
     t.string "emoji", null: false
     t.string "target", null: false
     t.string "slack_identifier", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["emoji"], name: "index_slack_reactions_on_emoji"
+    t.index ["slack_channel_id"], name: "index_slack_reactions_on_slack_channel_id"
     t.index ["slack_identifier"], name: "index_slack_reactions_on_slack_identifier"
     t.index ["target"], name: "index_slack_reactions_on_target"
     t.index ["user_id"], name: "index_slack_reactions_on_user_id"
@@ -57,5 +59,6 @@ ActiveRecord::Schema.define(version: 2018_05_20_100217) do
 
   add_foreign_key "slack_messages", "slack_channels"
   add_foreign_key "slack_messages", "users"
+  add_foreign_key "slack_reactions", "slack_channels"
   add_foreign_key "slack_reactions", "users"
 end

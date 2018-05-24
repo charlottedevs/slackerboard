@@ -6,9 +6,12 @@ class FetchSlackChannel
   def call
     context.channel = SlackChannel.find_or_create_by(slack_identifier: context.slack_identifier) do |channel|
       json = JSON.parse(res.body)
-      channel.name = json.dig('channel', 'name')
+      if json['ok']
+        channel.name = json.dig('channel', 'name')
+      else
+        raise ArgumentError, json['error']
+      end
     end
-
   end
 
   private

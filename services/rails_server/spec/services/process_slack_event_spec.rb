@@ -96,6 +96,19 @@ RSpec.describe ProcessSlackEvent do
     let(:emoji) { event['reaction'] }
     let(:type) { event.dig('item', 'type') }
 
+    context 'reaction to something in a private channel' do
+      let(:event_fixture) { 'slack_message_reaction_added_event' }
+      let(:slack_identifier) { event.dig('item', 'ts') }
+      let(:empty_result) { double(:empty_result, channel: nil) }
+
+      it 'does not create a new Slack Reaction' do
+        allow(FetchSlackChannel).to receive(:call).and_return empty_result
+        expect_any_instance_of(subject).to_not receive(:create_reaction)
+
+        perform
+      end
+    end
+
     context 'message reaction' do
       let(:event_fixture) { 'slack_message_reaction_added_event' }
       let(:slack_identifier) { event.dig('item', 'ts') }

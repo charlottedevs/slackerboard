@@ -5,11 +5,13 @@ RSpec.describe "reaction added" do
   let(:event_fixture) { 'slack_message_reaction_added_event' }
   let(:user_slack_id) { payload.dig('event', 'user') }
   let(:reaction_emoji) { payload.dig('event', 'reaction') }
+  let(:slack_channel_id) { payload.dig('event', 'item', 'channel') }
   let(:headers) do
     { "CONTENT_TYPE" => "application/json" }
   end
 
   let(:user) { create(:user, slack_identifier: user_slack_id) }
+  let(:channel) { create(:slack_channel, slack_identifier: slack_channel_id) }
   let(:make_request) do
     post "/slack/events", params: payload.to_json, headers: headers
   end
@@ -17,6 +19,7 @@ RSpec.describe "reaction added" do
   before do
     # setup
     user
+    channel if slack_channel_id
     allow_any_instance_of(Slack::EventsController).to receive(:verify!).and_return(true)
   end
 
@@ -40,13 +43,13 @@ RSpec.describe "reaction added" do
   context 'reaction towards a file' do
     let(:event_fixture) { 'slack_file_reaction_added_event' }
 
-    it_behaves_like 'creates a slack reaction'
+    it_behaves_like 'ignored slack reaction'
   end
 
 
   context 'reaction towards a file comment' do
     let(:event_fixture) { 'slack_file_comment_reaction_added_event' }
 
-    it_behaves_like 'creates a slack reaction'
+    it_behaves_like 'ignored slack reaction'
   end
 end

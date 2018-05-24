@@ -18,9 +18,9 @@ class ProcessSlackEvent
     elsif message_deleted?
       destroy_message
     elsif reaction_given?
-      create_reaction
+      create_reaction if channel
     elsif reaction_removed?
-      destroy_reaction
+      destroy_reaction if channel
     end
   end
 
@@ -41,7 +41,8 @@ class ProcessSlackEvent
       user_id: user.id,
       emoji: emoji,
       target: type,
-      slack_identifier: slack_identifier
+      slack_identifier: slack_identifier,
+      slack_channel_id: channel.id
     )
   end
 
@@ -76,7 +77,11 @@ class ProcessSlackEvent
   end
 
   def channel
-    context.channel ||= FetchSlackChannel.call(slack_identifier: event['channel']).channel
+    context.channel ||= FetchSlackChannel.call(slack_identifier: slack_channel_id).channel
+  end
+
+  def slack_channel_id
+    event['channel'] || event.dig('item', 'channel')
   end
 
   def user

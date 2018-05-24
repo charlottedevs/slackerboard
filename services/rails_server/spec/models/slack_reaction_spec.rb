@@ -1,5 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe SlackReaction, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it 'belongs to a slack channel' do
+    expect(subject).to respond_to :slack_channel
+  end
 end

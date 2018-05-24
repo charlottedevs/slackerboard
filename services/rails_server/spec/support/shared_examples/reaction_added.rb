@@ -4,7 +4,8 @@ RSpec.shared_examples 'reaction added' do
       user_id: user.id,
       emoji: emoji,
       target: type,
-      slack_identifier: slack_identifier
+      slack_identifier: slack_identifier,
+      slack_channel_id: slack_channel_id
     )
 
     perform
