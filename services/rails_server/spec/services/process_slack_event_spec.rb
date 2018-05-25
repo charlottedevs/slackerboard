@@ -82,11 +82,16 @@ RSpec.describe ProcessSlackEvent do
 
   context 'message removed event' do
     let(:event_fixture) { 'slack_message_deleted_event' }
-    let(:ts) { event.fetch('ts') }
+    let(:ts) { event.fetch('deleted_ts') }
     let(:messages) { double(:messages) }
 
     it 'destroys the SlackMessage' do
-      expect(SlackMessage).to receive(:where).with(ts: ts).and_return messages
+      expect(SlackMessage).to receive(:where)
+        .with(
+          slack_channel_id: channel.id,
+          ts: ts
+        ).and_return messages
+
       expect(messages).to receive(:destroy_all)
       perform
     end

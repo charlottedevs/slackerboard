@@ -12,7 +12,7 @@ RSpec.describe "slack message deleted" do
   let(:user) { create(:user, slack_identifier: user_slack_id) }
   let(:channel) { create(:slack_channel, slack_identifier: slack_channel_id) }
   let(:message) do
-    create(:slack_message, user: user, slack_channel: channel, ts: payload.dig('event', 'ts'))
+    create(:slack_message, user: user, slack_channel: channel, ts: payload.dig('event', 'deleted_ts'))
   end
   let(:make_request) do
     post "/slack/events", params: payload.to_json, headers: headers

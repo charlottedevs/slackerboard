@@ -28,12 +28,15 @@ class ProcessSlackEvent
     SlackMessage.create(
       user_id: user.id,
       slack_channel_id: channel.id,
-      ts: ts
+      ts: event['ts']
     )
   end
 
   def destroy_message
-    SlackMessage.where(ts: ts).destroy_all
+    SlackMessage.where(
+      slack_channel_id: channel.id,
+      ts: event['deleted_ts']
+    ).destroy_all
   end
 
   def create_reaction
@@ -48,10 +51,6 @@ class ProcessSlackEvent
 
   def destroy_reaction
     SlackReaction.where(slack_identifier: slack_identifier).destroy_all
-  end
-
-  def ts
-    event['ts']
   end
 
   def emoji
