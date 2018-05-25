@@ -55,5 +55,13 @@ RSpec.describe FetchSlackUser do
       expect(user.slack_handle).to eq(payload.dig('user', 'profile', 'display_name'))
       expect(user.profile_image).to eq(payload.dig('user', 'profile', 'image_512'))
     end
+
+    context 'when user does NOT have display_name' do
+      let(:payload) { json_data(filename: 'slack_user_without_display_name') }
+      it 'falls back to name' do
+        user = perform.user
+        expect(user.slack_handle).to eq(payload.dig('user', 'name'))
+      end
+    end
   end
 end

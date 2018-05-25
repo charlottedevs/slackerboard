@@ -5,10 +5,16 @@ class FetchSlackUser
   def call
     context.user = User.find_or_create_by(slack_identifier: slack_identifier) do |user|
       user_data = JSON.parse(res.body).fetch('user')
+      profile_data = user_data.fetch('profile')
 
       user.real_name = user_data['real_name']
-      user.slack_handle = user_data['name']
-      user.profile_image = user_data.dig('profile', 'image_512')
+      user.profile_image = profile_data['image_512']
+
+      # prefer display_name over 'name'
+      # BUT fallback if it does not exist.
+      # https://api.slack.com/changelog/2017-09-the-one-about-usernames
+      display_name = profile_data['display_name']
+      user.slack_handle = display_name.present? ? display_name : user_data['name']
     end
   end
 

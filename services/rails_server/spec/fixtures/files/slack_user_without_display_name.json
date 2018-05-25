@@ -3,7 +3,7 @@
   "user": {
     "id": "U4KTX6E4U",
     "team_id": "T4LHRGL2K",
-    "name": "john.mason",
+    "name": "nodisplayname",
     "deleted": false,
     "color": "9f69e7",
     "real_name": "John Mason",
@@ -16,7 +16,7 @@
       "skype": "",
       "real_name": "John Mason",
       "real_name_normalized": "John Mason",
-      "display_name": "john",
+      "display_name": "",
       "display_name_normalized": "john",
       "status_text": "",
       "status_emoji": ":nerd_face:",
