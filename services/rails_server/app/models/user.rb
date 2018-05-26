@@ -12,6 +12,7 @@ class User < ApplicationRecord
         .group('users.id')
         .having('count(slack_messages.user_id) > 0 OR count(slack_reactions.user_id) > 0')
         .by_slack_messages
+        .limit(50)
   end
 
   def update_slack_info
