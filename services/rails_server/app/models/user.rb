@@ -13,4 +13,12 @@ class User < ApplicationRecord
         .having('count(slack_messages.user_id) > 0 OR count(slack_reactions.user_id) > 0')
         .by_slack_messages
   end
+
+  def update_slack_info
+    UpdateSlackUser.call(user: self)
+  end
+
+  def update_slack_info!
+    UpdateSlackUser.call(user: self, save: true)
+  end
 end
