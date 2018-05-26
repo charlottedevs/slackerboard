@@ -53,24 +53,26 @@ class Slackerboard
           JOIN users u ON r.user_id = u.id
         WHERE u.id = #{user.id}
         GROUP BY r.emoji
+        ORDER BY reactions_given DESC
       SQL
     end
 
     def msg_sql(user)
       <<~SQL
-      SELECT
-      c.name AS channel
-      ,c.slack_identifier
-      ,(
-        SELECT COUNT(*)
-        FROM slack_messages sm
-        WHERE sm.user_id = #{user.id} AND sm.slack_channel_id = c.id
-      ) AS messages_sent
-      FROM slack_messages m
-      JOIN users u ON m.user_id = u.id
-      LEFT JOIN slack_channels c ON m.slack_channel_id = c.id
-      WHERE u.id = #{user.id}
-      GROUP BY channel, c.id
+        SELECT
+        c.name AS channel
+        ,c.slack_identifier
+        ,(
+          SELECT COUNT(*)
+          FROM slack_messages sm
+          WHERE sm.user_id = #{user.id} AND sm.slack_channel_id = c.id
+        ) AS messages_sent
+        FROM slack_messages m
+        JOIN users u ON m.user_id = u.id
+        LEFT JOIN slack_channels c ON m.slack_channel_id = c.id
+        WHERE u.id = #{user.id}
+        GROUP BY channel, c.id
+        ORDER BY messages_sent DESC
       SQL
     end
   end
