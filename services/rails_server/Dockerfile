@@ -5,7 +5,7 @@ RUN mkdir -p ${WEBAPP}
 WORKDIR ${WEBAPP}
 
 
-RUN apt-get update && apt-get install -y nodejs
+RUN apt-get update && apt-get install -y nodejs postgresql postgresql-contrib
 
 # Run Bundle in a cache efficient way
 RUN gem install bundler --no-ri --no-rdoc

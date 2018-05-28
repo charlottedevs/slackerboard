@@ -18,7 +18,8 @@ RSpec.describe Slackerboard do
   describe 'initialization' do
     subject { described_class }
     it 'receives options' do
-      expect { subject.new(this_week: true) }.to_not raise_error
+      expect { subject.new(since: 5.days.ago) }.to_not raise_error
+      expect { subject.new }.to_not raise_error
     end
 
     it 'returns an array' do
@@ -27,7 +28,7 @@ RSpec.describe Slackerboard do
   end
 
   describe 'this_week' do
-    subject { described_class.new(this_week: true).to_json }
+    subject { described_class.new(since: Date.today.monday).to_json }
 
     let(:old_message) do
       create(:slack_message,

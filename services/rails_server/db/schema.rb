@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_25_140804) do
+ActiveRecord::Schema.define(version: 2018_05_29_132135) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -63,4 +63,36 @@ ActiveRecord::Schema.define(version: 2018_05_25_140804) do
   add_foreign_key "slack_messages", "users"
   add_foreign_key "slack_reactions", "slack_channels"
   add_foreign_key "slack_reactions", "users"
+
+  create_view "channel_usages",  sql_definition: <<-SQL
+      SELECT u.id AS user_id,
+      messages.messages_given,
+      messages.channel,
+      messages.channel_slack_identifier,
+      messages.day
+     FROM (users u
+       JOIN ( SELECT sm.user_id AS id,
+              sc.name AS channel,
+              sc.slack_identifier AS channel_slack_identifier,
+              count(sm.user_id) AS messages_given,
+              date(sm.created_at) AS day
+             FROM (slack_messages sm
+               JOIN slack_channels sc ON ((sc.id = sm.slack_channel_id)))
+            GROUP BY sm.user_id, sc.name, sc.slack_identifier, (date(sm.created_at))) messages USING (id));
+  SQL
+
+  create_view "reaction_usages",  sql_definition: <<-SQL
+      SELECT u.id AS user_id,
+      reactions.reactions_given,
+      reactions.emoji,
+      reactions.day
+     FROM (users u
+       JOIN ( SELECT sr.user_id AS id,
+              sr.emoji,
+              count(sr.user_id) AS reactions_given,
+              date(sr.created_at) AS day
+             FROM slack_reactions sr
+            GROUP BY sr.user_id, sr.emoji, (date(sr.created_at))) reactions USING (id));
+  SQL
+
 end

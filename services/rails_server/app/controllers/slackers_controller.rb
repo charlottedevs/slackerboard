@@ -1,13 +1,16 @@
 class SlackersController < ApplicationController
   def index
-    render json: { slackerboard: slackerboard }
+    render json: { slackerboard: slackerboard.to_json }
   end
 
   private
 
   def slackerboard
-    args = { this_week: true } if this_week?
-    Slackerboard.new(args).to_json
+    if this_week?
+      Slackerboard.new(since: Date.today.monday)
+    else
+      Slackerboard.new
+    end
   end
 
   def this_week?

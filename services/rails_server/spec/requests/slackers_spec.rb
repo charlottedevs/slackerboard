@@ -6,18 +6,18 @@ RSpec.describe '/slackers' do
   end
 
   it 'calls on Slackerboard' do
-    expect(Slackerboard).to receive(:new)
+    expect(Slackerboard).to receive(:new).with(no_args)
     get '/slackers'
   end
 
   context 'when given `thisweek` param' do
-    it 'does NOT call on Slackerboard.alltime' do
-      expect(Slackerboard).to receive(:new).with(this_week: true)
+    it 'injects monday into Slackerboard args' do
+      expect(Slackerboard).to receive(:new).with(since: Date.today.monday)
       get '/slackers?thisweek'
     end
 
     it 'works even if thisweek has a value in params' do
-      expect(Slackerboard).to receive(:new).with(this_week: true)
+      expect(Slackerboard).to receive(:new).with(since: Date.today.monday)
       get '/slackers?thisweek=true'
     end
   end

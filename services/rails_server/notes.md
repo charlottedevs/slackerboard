@@ -10,6 +10,34 @@ profile_image
 stats_id
 ```
 
+# channel_usage
+```
+user_id
+channel_name
+channel_slack_identifier
+messages_given
+day
+```
+
+1 general 12 20180528
+1 random  23 20180529
+
+
+# reaction_usage
+```
+user_id
+emoji
+reactions_given
+day
+```
+
+1 +1    12 20180528
+1 smile  9 20180528
+
+
+
+
+
 ## channel stats
 ```
 slack_channel_id
