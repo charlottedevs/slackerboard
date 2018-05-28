@@ -7,7 +7,6 @@ var io = require('socket.io')(server);
 var slackerboard = require('./slackers');
 
 
-let apiEndpoint = 'http://rails_server:5000/slackers';
 const slackerboard_change = 'slackerboard_change';
 
 redis.subscribe(slackerboard_change)
@@ -25,8 +24,10 @@ io.on('connection', function(socket) {
     const { channel } = data;
     console.log('client joined: ', channel)
 
+    let apiEndpoint = 'http://rails_server:5000/slackers';
+
     if (channel === 'this_week_slackerboard_updates') {
-      apiEndpoint = `${apiEndpoint}?thisweek=true`;
+      apiEndpoint = `${apiEndpoint}?thisweek`;
     }
 
     // change: `this_week_slackerboard_updates`

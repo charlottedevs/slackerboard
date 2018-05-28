@@ -15,13 +15,12 @@ class User < ApplicationRecord
     )
   }
 
-
-  def self.slackers
-    User.left_outer_joins(:slack_messages, :slack_reactions)
-        .group('users.id')
-        .having('count(slack_messages.user_id) > 0')
-        .by_slack_messages
-        .limit(50)
+  def self.slackers(this_week: false)
+    if this_week
+      self.slackers_this_week_query
+    else
+      self.slackers_all_time_query
+    end
   end
 
   def update_slack_info
@@ -30,5 +29,25 @@ class User < ApplicationRecord
 
   def update_slack_info!
     UpdateSlackUser.call(user: self, save: true)
+  end
+
+  def self.slackers_this_week_query
+    User.joins(:slack_messages, :slack_reactions)
+      .where('slack_messages.created_at >= ?', Slackerboard.this_monday)
+      .group('users.id')
+      .having('count(slack_messages.user_id) > 0')
+      .order(
+        Arel.sql 'count(slack_messages) DESC, count(slack_reactions) DESC, slack_handle'
+      )
+      .by_slack_messages
+      .limit(50)
+  end
+
+  def self.slackers_all_time_query
+    User.joins(:slack_messages)
+      .group('users.id')
+      .having('count(slack_messages.user_id) > 0')
+      .by_slack_messages
+      .limit(50)
   end
 end
