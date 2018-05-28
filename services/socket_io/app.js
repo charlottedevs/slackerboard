@@ -7,7 +7,7 @@ var io = require('socket.io')(server);
 var slackerboard = require('./slackers');
 
 
-const apiEndpoint = 'http://rails_server:5000/slackers';
+let apiEndpoint = 'http://rails_server:5000/slackers';
 const slackerboard_change = 'slackerboard_change';
 
 redis.subscribe(slackerboard_change)
@@ -22,9 +22,20 @@ io.on('connection', function(socket) {
   console.log('socket connected...');
 
   socket.on('join', function(data) {
+    const { channel } = data;
+    console.log('client joined: ', channel)
+
+    if (channel === 'this_week_slackerboard_updates') {
+      apiEndpoint = `${apiEndpoint}?thisweek=true`;
+    }
+
+    // change: `this_week_slackerboard_updates`
+    // to: `this_week_slackerboard_update`
+    const eventType = channel.slice(0, -1);
+
     axios(apiEndpoint)
       .then(res => {
-        socket.emit(slackerboard_change, res.data);
+        socket.emit(eventType, res.data);
       })
       .catch(error => console.log(error))
   });
@@ -34,5 +45,9 @@ io.on('connection', function(socket) {
     socket.disconnect();
   });
 });
+
+app.get('/', function (req, res) {
+  res.send("meep")
+})
 
 server.listen(4200);
