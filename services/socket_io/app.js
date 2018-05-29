@@ -21,7 +21,9 @@ redis.on('message', function(channel, message){
 
 io.on('connection', function(socket) {
   socket.on('join', function(data) {
-    const { channel } = data;
+    const channel = data.channel || 'noop';
+
+    if (channel === 'noop') { return; }
 
     let apiEndpoint = 'http://rails_server:5000/slackers';
 
