@@ -3,13 +3,13 @@ require 'rails_helper'
 RSpec.describe "reaction removed" do
   let(:payload) { json_data(filename: event_fixture) }
   let(:user_slack_id) { payload.dig('event', 'user') }
-  let(:reaction_emoji) { payload.dig('event', 'reaction') }
+  let(:emoji) { payload.dig('event', 'reaction') }
   let(:headers) do
     { "CONTENT_TYPE" => "application/json" }
   end
 
   let(:reaction) do
-    create(:slack_reaction, user: user, slack_identifier: slack_identifier)
+    create(:slack_reaction, emoji: emoji, user: user, slack_identifier: slack_identifier)
   end
 
   let(:user) { create(:user, slack_identifier: user_slack_id) }
@@ -33,7 +33,22 @@ RSpec.describe "reaction removed" do
     }.from(1).to(0)
   end
 
-  it_behaves_like 'slackerboard_change'
+  context 'when there are multiple reactions in same minute' do
+    let(:another_reaction) do
+      create(:slack_reaction, emoji: 'smile', user: user, slack_identifier: slack_identifier)
+    end
+    before do
+      reaction
+      another_reaction
+    end
+
+    it 'only deletes the correct one' do
+      expect(user.slack_reactions.size).to eq(2)
+      expect { make_request }.to change {
+        SlackReaction.where(user_id: user.id).count
+      }.from(2).to(1)
+    end
+  end
 
   context 'reaction does NOT exist in db' do
     it 'does NOT blow up' do

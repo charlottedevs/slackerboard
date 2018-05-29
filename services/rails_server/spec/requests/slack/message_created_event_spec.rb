@@ -30,6 +30,4 @@ RSpec.describe "Slack Events" do
       SlackMessage.where(user_id: user.id).count
     }.from(0).to(1)
   end
-
-  it_behaves_like 'slackerboard_change'
 end

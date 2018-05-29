@@ -23,9 +23,6 @@ RSpec.describe "reaction added" do
     allow_any_instance_of(Slack::EventsController).to receive(:verify!).and_return(true)
   end
 
-
-  it_behaves_like 'slackerboard_change'
-
   context 'reaction towards a message' do
     let(:event_fixture) { 'slack_message_reaction_added_event' }
 

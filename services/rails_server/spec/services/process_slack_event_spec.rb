@@ -4,13 +4,13 @@ RSpec.describe ProcessSlackEvent do
   subject { described_class }
   let(:perform) { subject.call(payload) }
   let(:payload) { json_data(filename: event_fixture) }
+  let(:emoji) { event['reaction'] }
   let(:event_fixture) { 'slack_message_created_event' }
   let(:slack_channel_id) { payload.dig('event', 'channel') }
   let(:user_slack_id) { payload.dig('event', 'user') }
   let(:channel) { double(:channel, id: slack_channel_id) }
   let(:reaction) { double(:reaction) }
   let(:user) { double(:user, id: 7) }
-  let(:cache) { double(:cache) }
   let(:event) { payload['event'] }
 
   let(:user_fetch_result) do
@@ -30,23 +30,14 @@ RSpec.describe ProcessSlackEvent do
     allow(FetchSlackUser).to receive(:call).and_return(user_fetch_result)
     allow(FetchSlackChannel).to receive(:call).and_return(channel_fetch_result)
     allow(SlackReaction).to receive(:create)
-    allow(Rails).to receive(:cache).and_return cache
-    allow(cache).to receive(:delete)
   end
 
   describe 'error handling' do
     it 'returns error in result' do
-      allow(Rails).to receive(:cache).and_raise 'BOOM'
+      allow_any_instance_of(subject).to receive(:process).and_raise 'BOOM'
       result = perform
       expect(result.error).to eq('BOOM')
       expect(result).to be_a_failure
-    end
-  end
-
-  describe 'rails cache' do
-    it 'busts the cache "slackerboard"' do
-      expect(cache).to receive(:delete).with('slackerboard')
-      perform
     end
   end
 

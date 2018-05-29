@@ -1,11 +1,8 @@
 class ProcessSlackEvent
   include Interactor
 
-  SLACKERBOARD_CACHE = 'slackerboard'.freeze
-
   def call
     process
-    Rails.cache.delete(SLACKERBOARD_CACHE)
   rescue => error
     context.fail!(error: error.message)
   end
@@ -50,7 +47,10 @@ class ProcessSlackEvent
   end
 
   def destroy_reaction
-    SlackReaction.where(slack_identifier: slack_identifier).destroy_all
+    SlackReaction.where(
+      emoji: emoji,
+      slack_identifier: slack_identifier
+    ).destroy_all
   end
 
   def emoji

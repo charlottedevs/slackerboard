@@ -32,8 +32,6 @@ RSpec.describe "slack message deleted" do
     }.from(1).to(0)
   end
 
-  it_behaves_like 'slackerboard_change'
-
   context 'slack message does NOT exist in db' do
     it 'does NOT blow up' do
       expect { make_request }.to_not raise_error
