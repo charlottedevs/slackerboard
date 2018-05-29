@@ -7,9 +7,11 @@ var io = require('socket.io')(server);
 var slackerboard = require('./slackers');
 
 
-const slackerboard_change = 'slackerboard_change';
+const all_time_updates = 'all_time_slackerboard_update';
+const weekly_updates = 'this_week_slackerboard_update';
 
-redis.subscribe(slackerboard_change)
+redis.subscribe(all_time_updates);
+redis.subscribe(weekly_updates);
 
 redis.on('message', function(channel, message){
   var info = JSON.parse(message);
@@ -18,11 +20,8 @@ redis.on('message', function(channel, message){
 });
 
 io.on('connection', function(socket) {
-  console.log('socket connected...');
-
   socket.on('join', function(data) {
     const { channel } = data;
-    console.log('client joined: ', channel)
 
     let apiEndpoint = 'http://rails_server:5000/slackers';
 
@@ -42,7 +41,6 @@ io.on('connection', function(socket) {
   });
 
   socket.on('disconnect', function() {
-    console.log('socket disconnected')
     socket.disconnect();
   });
 });
