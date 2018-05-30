@@ -25,7 +25,7 @@ class Slackerboard
           json.messages_sent summary.messages_given
         end
 
-        json.reactions user.reaction_summary(since: since)  do |summary|
+        json.reactions user.reaction_summary(since: since).limit(30)  do |summary|
           json.emoji summary.emoji
           json.reactions_given summary.reactions_given
         end
