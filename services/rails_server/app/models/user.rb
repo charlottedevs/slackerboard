@@ -32,6 +32,7 @@ class User < ApplicationRecord
       %{reaction_where_clause}
       GROUP BY id
     ) AS r USING(id)
+    ORDER BY slack_messages_count DESC, slack_reactions_count DESC, slack_handle
   ) AS users
   SQL
 

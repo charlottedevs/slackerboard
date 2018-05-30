@@ -16,4 +16,5 @@ JOIN (
   JOIN slack_channels sc ON sc.id = sm.slack_channel_id
   GROUP BY sm.user_id, sc.name, sc.slack_identifier, day
 ) AS messages USING(id)
+ORDER BY user_id, messages_given DESC, messages.channel DESC
 ;

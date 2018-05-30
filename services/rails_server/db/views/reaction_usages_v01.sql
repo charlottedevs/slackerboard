@@ -13,4 +13,5 @@ JOIN (
   FROM slack_reactions sr
   GROUP BY sr.user_id, sr.emoji, day
 ) AS reactions USING(id)
+ORDER BY user_id, reactions_given DESC, reactions.emoji DESC
 ;
