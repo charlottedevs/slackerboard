@@ -19,15 +19,15 @@ class Slackerboard
                       :slack_handle,
                       :profile_image)
 
-        json.messages user.message_summary(since: since)  do |(channel, id), v|
-          json.channel channel
-          json.slack_identifier id
-          json.messages_sent v.to_i
+        json.messages user.message_summary(since: since)  do |summary|
+          json.channel summary.channel
+          json.slack_identifier summary.channel_slack_identifier
+          json.messages_sent summary.messages_given
         end
 
-        json.reactions user.reaction_summary(since: since)  do |k, v|
-          json.emoji k
-          json.reactions_given v.to_i
+        json.reactions user.reaction_summary(since: since)  do |summary|
+          json.emoji summary.emoji
+          json.reactions_given summary.reactions_given
         end
       end
     end

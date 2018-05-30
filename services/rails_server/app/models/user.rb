@@ -13,13 +13,13 @@ class User < ApplicationRecord
       ,u.slack_handle
       ,u.real_name
       ,u.profile_image
-      ,m.slack_messages_count
-      ,r.slack_reactions_count
+      ,COALESCE(m.messages_given, 0) AS messages_given
+      ,COALESCE(r.reactions_given, 0) AS reactions_given
     FROM users u
     JOIN (
       SELECT
          user_id AS id
-        ,sum(messages_given) as slack_messages_count
+        ,SUM(messages_given) AS messages_given
       FROM channel_usages cu
       %{message_where_clause}
       GROUP BY id
@@ -27,33 +27,33 @@ class User < ApplicationRecord
     LEFT JOIN (
       SELECT
          user_id AS id
-        ,sum(reactions_given) as slack_reactions_count
+        ,SUM(reactions_given) AS reactions_given
       FROM reaction_usages ru
       %{reaction_where_clause}
       GROUP BY id
     ) AS r USING(id)
-    ORDER BY slack_messages_count DESC, slack_reactions_count DESC, slack_handle
   ) AS users
   SQL
-
   def self.slackers(since: nil)
-    users = since ? User.load_slackers(since: since) : User.all
-
-    users.where('slack_messages_count > 0')
-        .order(
-          slack_messages_count: :desc,
-          slack_reactions_count: :desc,
-          slack_handle: :asc
-        )
-  end
-
-  def self.load_slackers(since: nil)
-    sql = SLACKERS % {
-      message_where_clause:  since_sql(since, tbl: 'cu', col: 'day'),
-      reaction_where_clause: since_sql(since, tbl: 'ru', col: 'day')
+    opts = {
+      message_where_clause:  nil,
+      reaction_where_clause: nil
     }
 
+    if since
+      opts[:message_where_clause] = since_sql(since, tbl: 'cu', col: 'day')
+      opts[:reaction_where_clause] = since_sql(since, tbl: 'ru', col: 'day')
+    end
+
+    sql = SLACKERS % opts
+
     User.from(sql)
+        .where('messages_given > 0')
+        .order(
+          messages_given: :desc,
+          reactions_given: :desc,
+          slack_handle: :asc
+        )
   end
 
   def self.since_sql(since, tbl:, col: 'created_at')
@@ -69,33 +69,47 @@ class User < ApplicationRecord
     UpdateSlackUser.call(user: self, save: true)
   end
 
+
+  MESSAGE_SUMMARY = <<~SQL
+  (
+    SELECT
+       user_id
+      ,channel
+      ,channel_slack_identifier
+      ,SUM(messages_given) AS messages_given
+    FROM channel_usages
+    %{where}
+    GROUP BY user_id, channel, channel_slack_identifier
+    ORDER BY user_id, messages_given DESC, channel DESC
+  ) AS channel_usages
+  SQL
   def message_summary(since: nil)
-    usage_summary(
-      channel_usages,
-      group_by: %i(channel channel_slack_identifier),
-      stat: :messages_given,
-      since: since
-    )
+    sql = MESSAGE_SUMMARY % { where: where(since) }
+    ChannelUsage.from(sql)
   end
 
-
+  REACTION_SUMMARY = <<~SQL
+  (
+    SELECT
+       user_id
+      ,emoji
+      ,SUM(reactions_given) AS reactions_given
+    FROM reaction_usages
+    %{where}
+    GROUP BY user_id, emoji
+    ORDER BY user_id, reactions_given DESC, emoji DESC
+  ) AS reaction_usages
+  SQL
   def reaction_summary(since: nil)
-    usage_summary(
-      reaction_usages,
-      group_by: :emoji,
-      stat: :reactions_given,
-      since: since
-    )
+    sql = REACTION_SUMMARY % { where: where(since) }
+    ReactionUsage.from(sql)
   end
 
   private
 
-  def usage_summary(usage, group_by:, stat:, since: nil)
-    assoc = if since
-              usage.where('day >= ?', since)
-            else
-              usage
-            end
-    assoc.group(group_by).sum(stat)
+  def where(since)
+    "WHERE user_id = '#{id}'".tap do |where|
+      where << " AND day >= '#{since}'" if since
+    end
   end
 end
