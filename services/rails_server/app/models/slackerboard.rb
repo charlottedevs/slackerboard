@@ -29,6 +29,8 @@ class Slackerboard
           json.emoji summary.emoji
           json.reactions_given summary.reactions_given
         end
+
+        json.message_count message_count(user)
       end
     end
   end
@@ -37,5 +39,12 @@ class Slackerboard
     @users ||= User
       .includes(:channel_usages, :reaction_usages)
       .slackers(since: since)
+  end
+
+
+  private
+
+  def message_count(user)
+    user.message_summary(since: since).sum(:messages_given).to_i
   end
 end
