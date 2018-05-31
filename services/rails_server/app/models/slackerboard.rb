@@ -39,6 +39,7 @@ class Slackerboard
     @users ||= User
       .includes(:channel_usages, :reaction_usages)
       .slackers(since: since)
+      .limit(30)
   end
 
 
