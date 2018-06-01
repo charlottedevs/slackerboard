@@ -16,7 +16,6 @@ redis.subscribe(weekly_updates);
 redis.on('message', function(channel, message){
   var info = JSON.parse(message);
   io.sockets.emit(channel, info);
-  console.log(channel, '->', info);
 });
 
 io.on('connection', function(socket) {
