@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# crontab might not know where docker-compose is in the PATH
+PATH=/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/bin
+
+docker-compose -f production.yml stop postgres
+docker-compose -f production.yml run --rm rails_server rails db:schema:load
+docker-compose -f production.yml up -d postgres
