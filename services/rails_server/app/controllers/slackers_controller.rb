@@ -7,7 +7,7 @@ class SlackersController < ApplicationController
 
   def slackerboard
     if this_week?
-      Slackerboard.new(since: Date.today.monday)
+      Slackerboard.new(since: Time.zone.today.monday)
     else
       Slackerboard.new
     end

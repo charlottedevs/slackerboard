@@ -20,7 +20,7 @@ class SlackEventWorker
     )
     ActionCable.server.broadcast(
       'this_week_slackerboard_update',
-      slackerboard: Slackerboard.new(since: Date.today.monday).to_json
+      slackerboard: Slackerboard.new(since: Time.zone.today.monday).to_json
     )
   end
 end

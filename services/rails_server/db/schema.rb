@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_29_132135) do
+ActiveRecord::Schema.define(version: 2018_06_04_005942) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -64,6 +64,21 @@ ActiveRecord::Schema.define(version: 2018_05_29_132135) do
   add_foreign_key "slack_reactions", "slack_channels"
   add_foreign_key "slack_reactions", "users"
 
+  create_view "reaction_usages",  sql_definition: <<-SQL
+      SELECT u.id AS user_id,
+      reactions.reactions_given,
+      reactions.emoji,
+      reactions.day
+     FROM (users u
+       JOIN ( SELECT sr.user_id AS id,
+              sr.emoji,
+              count(sr.user_id) AS reactions_given,
+              sr.created_at AS day
+             FROM slack_reactions sr
+            GROUP BY sr.user_id, sr.emoji, sr.created_at) reactions USING (id))
+    ORDER BY u.id, reactions.reactions_given DESC, reactions.emoji DESC;
+  SQL
+
   create_view "channel_usages",  sql_definition: <<-SQL
       SELECT u.id AS user_id,
       messages.messages_given,
@@ -75,26 +90,11 @@ ActiveRecord::Schema.define(version: 2018_05_29_132135) do
               sc.name AS channel,
               sc.slack_identifier AS channel_slack_identifier,
               count(sm.user_id) AS messages_given,
-              date(sm.created_at) AS day
+              sm.created_at AS day
              FROM (slack_messages sm
                JOIN slack_channels sc ON ((sc.id = sm.slack_channel_id)))
-            GROUP BY sm.user_id, sc.name, sc.slack_identifier, (date(sm.created_at))) messages USING (id))
+            GROUP BY sm.user_id, sc.name, sc.slack_identifier, sm.created_at) messages USING (id))
     ORDER BY u.id, messages.messages_given DESC, messages.channel DESC;
-  SQL
-
-  create_view "reaction_usages",  sql_definition: <<-SQL
-      SELECT u.id AS user_id,
-      reactions.reactions_given,
-      reactions.emoji,
-      reactions.day
-     FROM (users u
-       JOIN ( SELECT sr.user_id AS id,
-              sr.emoji,
-              count(sr.user_id) AS reactions_given,
-              date(sr.created_at) AS day
-             FROM slack_reactions sr
-            GROUP BY sr.user_id, sr.emoji, (date(sr.created_at))) reactions USING (id))
-    ORDER BY u.id, reactions.reactions_given DESC, reactions.emoji DESC;
   SQL
 
 end

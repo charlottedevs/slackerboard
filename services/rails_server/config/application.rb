@@ -11,7 +11,7 @@ Dotenv::Railtie.load unless Rails.env.production?
 module LurkerBot
   class Application < Rails::Application
     config.api_only = true
-
+    config.time_zone = 'Eastern Time (US & Canada)'
     config.filter_parameters += [:token]
 
     # Initialize configuration defaults for originally generated Rails version.

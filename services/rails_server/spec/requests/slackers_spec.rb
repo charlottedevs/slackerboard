@@ -12,12 +12,12 @@ RSpec.describe '/slackers' do
 
   context 'when given `thisweek` param' do
     it 'injects monday into Slackerboard args' do
-      expect(Slackerboard).to receive(:new).with(since: Date.today.monday)
+      expect(Slackerboard).to receive(:new).with(since: Time.zone.today.monday)
       get '/slackers?thisweek'
     end
 
     it 'works even if thisweek has a value in params' do
-      expect(Slackerboard).to receive(:new).with(since: Date.today.monday)
+      expect(Slackerboard).to receive(:new).with(since: Time.zone.today.monday)
       get '/slackers?thisweek=true'
     end
   end
