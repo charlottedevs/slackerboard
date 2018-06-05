@@ -1,0 +1,9 @@
+#!/bin/bash
+
+docker run -it --rm -p 80:80 --name letsencrypt \
+  -v "/etc/letsencrypt:/etc/letsencrypt" \
+  -v "/var/lib/letsencrypt:/var/lib/letsencrypt" \
+  certbot/certbot:latest auth --server https://acme-staging.api.letsencrypt.org/directory \
+  --debug --standalone --email john@johnmason.io --agree-tos \
+  --renew-by-default --preferred-challenges http \
+  --verbose -d s.charlottedevs.com

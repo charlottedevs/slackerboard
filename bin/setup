@@ -114,6 +114,9 @@ add_sudo_users_to_docker_group
 info 'checking docker-compose is installed'
 check_and_install_docker_compose
 
+info 'running letsencrypt'
+./bin/letsencrypt
+
 info 'building services (this might take a while)'
 compose build
 
