@@ -114,11 +114,16 @@ add_sudo_users_to_docker_group
 info 'checking docker-compose is installed'
 check_and_install_docker_compose
 
-info 'running letsencrypt'
-./bin/letsencrypt
-
 info 'building services (this might take a while)'
 compose build
+
+if [ "$BUILD_ENV" =  "production" ]; then
+  info 'running letsencrypt'
+  ./bin/letsencrypt
+
+  info 'building frontend'
+  compose run --rm slackerboard yarn run build
+fi
 
 info 'setting up db'
 compose run --rm rails_server bin/setup

@@ -9,6 +9,7 @@ services:
     volumes:
       - ./nginx/dev/nginx.conf:/etc/nginx/nginx.conf
       - /etc/letsencrypt:/etc/letsencrypt
+      - /tmp/letsencrypt/www:/var/www
       - /var/lib/letsencrypt:/var/lib/letsencrypt
     ports:
       - 80:80
