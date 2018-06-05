@@ -3,60 +3,60 @@ services:
   nginx:
     image: nginx
     links:
+      - slackerboard
       - rails_server
       - socket_io
     volumes:
-      - ./services/nginx/dev/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/dev/nginx.conf:/etc/nginx/nginx.conf
       - /etc/letsencrypt:/etc/letsencrypt
       - /var/lib/letsencrypt:/var/lib/letsencrypt
     ports:
       - 80:80
 
+  slackerboard:
+    build: slackerboard
+    command: yarn run dev
+    volumes:
+      - ./slackerboard:/usr/src/app
+      - slackerboard_node_modules:/usr/src/app/node_modules
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8080
+
   rails_server:
-    build: services/rails_server
+    build: rails_server
     command: bundle exec rails s -p 5000 -b 0.0.0.0
     environment:
       - PORT=5000
     env_file:
-      - ./services/rails_server/.env
+      - ./rails_server/.env
     volumes:
-      - ./services/rails_server:/home/app/webapp
+      - ./rails_server:/home/app/webapp
       - bundle:/usr/local/bundle
     links:
       - postgres
       - redis
 
-
-  example_service:
-    build: services/example_service
-    command: python3 main.py
-    volumes:
-      - ./services//example_service:/code
-    links:
-      - redis
-
   sidekiq:
-    build: services/rails_server
+    build: rails_server
     command: sidekiq -C config/sidekiq.yml
     env_file:
-      - ./services/rails_server/.env
+      - ./rails_server/.env
     volumes:
-      - ./services/rails_server:/home/app/webapp
+      - ./rails_server:/home/app/webapp
       - bundle:/usr/local/bundle
     links:
       - postgres
       - redis
 
   socket_io:
-    build: services/socket_io
+    build: socket_io
     command: npm start
     links:
       - redis
-    ports:
-      - 4200:4200
     volumes:
-      - ./services/socket_io:/usr/src/app
-      - node_modules:/usr/src/app/node_modules
+      - ./socket_io:/usr/src/app
+      - socket_io_node_modules:/usr/src/app/node_modules
 
   redis:
     image: redis:3.2
@@ -69,4 +69,5 @@ services:
 volumes:
   bundle:
   pg_data:
-  node_modules:
+  socket_io_node_modules:
+  slackerboard_node_modules:

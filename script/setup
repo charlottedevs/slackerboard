@@ -37,9 +37,6 @@ step docker-compose build
 info 'setting up db'
 step docker-compose run --rm rails_server bin/setup
 
-info 'running example service'
-step docker-compose up example_service
-
 title 'setup complete'
 
 echo

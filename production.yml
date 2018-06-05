@@ -29,15 +29,6 @@ services:
       - postgres
       - redis
 
-
-  example_service:
-    build: services/example_service
-    command: python3 main.py
-    volumes:
-      - ./services/example_service:/code
-    links:
-      - redis
-
   sidekiq:
     build: services/rails_server
     command: sidekiq -C config/sidekiq.yml
