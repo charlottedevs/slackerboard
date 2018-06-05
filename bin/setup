@@ -6,18 +6,24 @@ set -e
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
 cd "$DIR/.."
 
-title() {
-  echo "---> $*"
+BUILD_ENV=${1:-development}
+
+showcmd() {
+  echo "$ $*"
 }
 
 info() {
   echo "+ $*"
 }
 
-step() {
-  title "$*"
-  eval "$*" || abort "$*"
+ok() {
   info "=> OK"
+}
+
+step() {
+  showcmd "$*"
+  eval "$*" || abort "$*"
+  ok
 }
 
 abort() {
@@ -25,21 +31,93 @@ abort() {
   exit 1
 }
 
-info 'checking docker-compose is installed'
-step docker-compose --version
+check_root() {
+  if [[ $EUID -ne 0 ]]; then
+    echo "This script must be run as root. Please sudo or log in as root first." 1>&2
+    exit 1
+  fi
+
+  ok
+}
+
+check_and_install_docker () {
+  docker_path=`command -v docker.io || command -v docker || true`
+  if [ -z $docker_path ]; then
+    read  -p "Docker not installed. Enter to install from https://get.docker.com/ or Ctrl+C to exit"
+    curl https://get.docker.com/ | sh
+  fi
+
+  docker_path=`command -v docker.io || command -v docker || true`
+  if [ -z $docker_path ]; then
+    echo Docker install failed. Quitting.
+    exit
+  fi
+
+  ok
+}
+
+add_sudo_users_to_docker_group () {
+  groupadd docker 2>/dev/null || true
+  users=`grep -Po '^sudo.+:\K.*$' /etc/group || true`
+  for u in "$users"; do
+    echo "$u is now in docker group"
+    usermod -aG docker $u
+  done
+
+  ok
+}
+
+check_and_install_docker_compose () {
+  docker_compose_path=`command -v docker-compose || true`
+  if [ -z $docker_compose_path ]; then
+    read  -p "Docker Compose not installed. Enter to install or Ctrl+C to exit"
+    compose_version=`git ls-remote https://github.com/docker/compose | grep refs/tags | grep -oP "[0-9]+\.[0-9][0-9]+\.[0-9]+$" | tail -n 1`
+    compose_url="https://github.com/docker/compose/releases/download/${compose_version}/docker-compose-`uname -s`-`uname -m`"
+    compose_completion_url="https://raw.githubusercontent.com/docker/compose/${compose_version}/contrib/completion/bash/docker-compose"
+
+    sh -c "curl -L $compose_url > /usr/local/bin/docker-compose"
+    chmod +x /usr/local/bin/docker-compose
+    sh -c "curl -L $compose_completion_url > /etc/bash_completion.d/docker-compose"
+  fi
+
+
+  docker_compose_path=`command -v docker-compose || true`
+  if [ -z $docker_compose_path ]; then
+    echo Docker Compose install failed. Quitting.
+    exit
+  fi
+
+  ok
+}
+
+compose () {
+  if [ "$BUILD_ENV" =  "production" ]; then
+    flags='-f production.yml'
+  elif [ "$BUILD_ENV" != "development" ]; then
+    abort "Unknown build environment: '$BUILD_ENV'.  Aborting."
+  fi
+
+  step docker-compose "$flags" "$@"
+}
+
+echo "building environment: $BUILD_ENV"
+
+info 'checking permissions'
+check_root
 
 info 'checking docker is installed'
-step docker -v
+check_and_install_docker
+
+info 'adding any sudo users to docker group'
+add_sudo_users_to_docker_group
+
+info 'checking docker-compose is installed'
+check_and_install_docker_compose
 
 info 'building services (this might take a while)'
-step docker-compose build
+compose build
 
 info 'setting up db'
-step docker-compose run --rm rails_server bin/setup
+compose run --rm rails_server bin/setup
 
-title 'setup complete'
-
-echo
-echo 'start up the entire stack by running: `docker-compose up`'
-echo 'application will be available on localhost:80'
-
+echo 'setup complete'

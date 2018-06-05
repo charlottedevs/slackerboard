@@ -66,10 +66,10 @@ test:
 #
 production:
   <<: *default
-  encoding: utf8
-  host: postgres
-  database: <%= ENV['DB_NAME'] %>
-  host: <%= ENV['DB_HOST'] %>
-  username: <%= ENV['DB_USERNAME'] %>
-  password: <%= ENV['DB_PASSWORD'] %>
-  port: <%= ENV['DB_PORT'] %>
+#  encoding: utf8
+#  host: postgres
+#  database: <%= ENV['DB_NAME'] %>
+#  host: <%= ENV['DB_HOST'] %>
+#  username: <%= ENV['DB_USERNAME'] %>
+#  password: <%= ENV['DB_PASSWORD'] %>
+#  port: <%= ENV['DB_PORT'] %>
