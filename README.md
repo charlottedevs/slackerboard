@@ -1,28 +1,37 @@
-# API
+# Slackerboard
+
+
+### How to install in production environment
+
+This will need to be run as root or with sudo.
+
+```
+$ mkdir -p /var/slackerboard
+$ git clone https://github.com/charlottedevs/slackerboard.git /var/slackerboard
+$ cd /var/slackerboard
+$ bin/setup production
+```
+
+Start the app (and daemonize it) by running:
+
+```
+docker-compose -f production.yml -d up
+```
 
 ### How to setup development environment
 
-You need to make sure you have both `docker-compose` and `docker` installed on your machine.
+The setup script will handle installing docker if you don't have it already installed.
 
-Installation instructions:
-* [docker-compose](https://docs.docker.com/compose/install/#install-compose)
-* [docker (community edition)](https://docs.docker.com/install/)
-
-
-Finally, run the setup script:
 ```
-script/setup
+$ git clone https://github.com/charlottedevs/slackerboard.git
+$ cd slackerboard
+$ sudo bin/setup
 ```
 
-### Steps to create a new service
-1) create a new directory: `services/<yourservice>`
-2) get your code working locally without docker
-  > **NOTE**: even if you are not well versed in docker, you can still contribute!
-  Please feel free to disregard steps 3-5 while you're coding your service.
-  Once you're ready to move on, ask for docker help in `#questions`.
-  Of course, if you feel comfortable with docker already, please go ahead and add it
-  to your development workflow. :+1:
-3) create a Dockerfile that includes all necessary operating system dependencies
-  > see: [services/example service](services/example_service)
-4) add service to [docker-compose.yml](docker-compose.yml)
-5) run service with docker via `docker-compose up <yourservice>`
+Start the app by running:
+
+```
+docker-compose up
+```
+
+Will be available on http://localhost:80
