@@ -18,7 +18,7 @@ then
   git commit -m 'add emoji'
   git push
   echo 'deploying...'
-  script/deploy
+  script/deploy-gh-pages
 else
   echo 'no new emoji'
 fi

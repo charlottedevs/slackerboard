@@ -6,12 +6,12 @@
 # git reset
 # git commit --allow-empty -m 'Initial commit'
 # git checkout --force master
-# git worktree add dist gh-pages
+# git worktree add slackerboard/dist gh-pages
 
 yarn run build
 
 (
-cd dist
+cd slackerboard/dist
 echo slackerboard.charlottedevs.com > CNAME
 git add --all
 git commit -m "$(git log '--format=format:%H' master -1)"
