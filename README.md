@@ -15,7 +15,7 @@ $ bin/setup production
 Start the app (and daemonize it) by running:
 
 ```
-docker-compose -f production.yml -d up
+docker-compose -f production.yml up -d
 ```
 
 ### How to setup development environment
