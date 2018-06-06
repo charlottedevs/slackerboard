@@ -6,7 +6,32 @@ set -e
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
 cd "$DIR/.."
 
-BUILD_ENV=${1:-development}
+BUILD_ENV="$1"
+
+check_build_env () {
+  # ask user to confirm BUILD_ENV if no argument given
+  if [ -z "$BUILD_ENV" ]; then
+    default_selection='1'
+
+    echo 'Select build environment:'
+    echo '1) development'
+    echo '2) production'
+    read -p "build selection: [$default_selection] " build_selection
+
+    build_selection=${build_selection:-$default_selection}
+
+    if [ "$build_selection" = '1' ]; then
+      BUILD_ENV='development'
+    elif [ "$build_selection" = '2' ]; then
+      BUILD_ENV='production'
+    else
+      echo "invalid build selection: '$build_selection'"
+      exit
+    fi
+  fi
+
+  echo "building environment: $BUILD_ENV"
+}
 
 showcmd() {
   echo "$ $*"
@@ -91,7 +116,7 @@ check_and_install_docker_compose () {
 }
 
 compose () {
-  if [ "$BUILD_ENV" =  "production" ]; then
+  if [ "$BUILD_ENV" = "production" ]; then
     flags='-f production.yml'
   elif [ "$BUILD_ENV" != "development" ]; then
     abort "Unknown build environment: '$BUILD_ENV'.  Aborting."
@@ -100,10 +125,11 @@ compose () {
   step docker-compose "$flags" "$@"
 }
 
-echo "building environment: $BUILD_ENV"
-
 info 'checking permissions'
 check_root
+
+info 'checking build environment'
+check_build_env
 
 info 'checking docker is installed'
 check_and_install_docker
