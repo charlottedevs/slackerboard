@@ -8,6 +8,8 @@
 # git checkout --force master
 # git worktree add slackerboard/dist gh-pages
 
+set -e
+
 yarn run build
 
 (
