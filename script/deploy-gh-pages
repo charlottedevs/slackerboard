@@ -10,7 +10,10 @@
 
 set -e
 
+(
+cd slackerboard
 yarn run build
+)
 
 (
 cd slackerboard/dist
