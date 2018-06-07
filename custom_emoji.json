@@ -1,0 +1,277 @@
+[
+  {
+    "shortname": "bowtie",
+    "image": "bowtie.png",
+    "path": "slackerboard/static/emoji/bowtie.png"
+  },
+  {
+    "shortname": "squirrel",
+    "image": "squirrel.png",
+    "path": "slackerboard/static/emoji/squirrel.png"
+  },
+  {
+    "shortname": "glitch_crab",
+    "image": "glitch_crab.png",
+    "path": "slackerboard/static/emoji/glitch_crab.png"
+  },
+  {
+    "shortname": "piggy",
+    "image": "piggy.png",
+    "path": "slackerboard/static/emoji/piggy.png"
+  },
+  {
+    "shortname": "cubimal_chick",
+    "image": "cubimal_chick.png",
+    "path": "slackerboard/static/emoji/cubimal_chick.png"
+  },
+  {
+    "shortname": "dusty_stick",
+    "image": "dusty_stick.png",
+    "path": "slackerboard/static/emoji/dusty_stick.png"
+  },
+  {
+    "shortname": "slack",
+    "image": "slack.png",
+    "path": "slackerboard/static/emoji/slack.png"
+  },
+  {
+    "shortname": "pride",
+    "image": "pride.png",
+    "path": "slackerboard/static/emoji/pride.png"
+  },
+  {
+    "shortname": "thumbsup_all",
+    "image": "thumbsup_all.gif",
+    "path": "slackerboard/static/emoji/thumbsup_all.gif"
+  },
+  {
+    "shortname": "slack_call",
+    "image": "slack_call.png",
+    "path": "slackerboard/static/emoji/slack_call.png"
+  },
+  {
+    "shortname": "simple_smile",
+    "image": "simple_smile.png",
+    "path": "slackerboard/static/emoji/simple_smile.png"
+  },
+  {
+    "shortname": "partyparrot",
+    "image": "partyparrot.gif",
+    "path": "slackerboard/static/emoji/partyparrot.gif"
+  },
+  {
+    "shortname": "golang",
+    "image": "golang.png",
+    "path": "slackerboard/static/emoji/golang.png"
+  },
+  {
+    "shortname": "dealwithit",
+    "image": "dealwithit.png",
+    "path": "slackerboard/static/emoji/dealwithit.png"
+  },
+  {
+    "shortname": "dealwithit2",
+    "image": "dealwithit2.gif",
+    "path": "slackerboard/static/emoji/dealwithit2.gif"
+  },
+  {
+    "shortname": "yuno",
+    "image": "yuno.png",
+    "path": "slackerboard/static/emoji/yuno.png"
+  },
+  {
+    "shortname": "clapping",
+    "image": "clapping.gif",
+    "path": "slackerboard/static/emoji/clapping.gif"
+  },
+  {
+    "shortname": "dealwithitparrot",
+    "image": "dealwithitparrot.gif",
+    "path": "slackerboard/static/emoji/dealwithitparrot.gif"
+  },
+  {
+    "shortname": "fiestaparrot",
+    "image": "fiestaparrot.gif",
+    "path": "slackerboard/static/emoji/fiestaparrot.gif"
+  },
+  {
+    "shortname": "shipitparrot",
+    "image": "shipitparrot.gif",
+    "path": "slackerboard/static/emoji/shipitparrot.gif"
+  },
+  {
+    "shortname": "nyanparrot",
+    "image": "nyanparrot.gif",
+    "path": "slackerboard/static/emoji/nyanparrot.gif"
+  },
+  {
+    "shortname": "aussieparrot",
+    "image": "aussieparrot.gif",
+    "path": "slackerboard/static/emoji/aussieparrot.gif"
+  },
+  {
+    "shortname": "congalineparrot",
+    "image": "congalineparrot.gif",
+    "path": "slackerboard/static/emoji/congalineparrot.gif"
+  },
+  {
+    "shortname": "sassyparrot",
+    "image": "sassyparrot.gif",
+    "path": "slackerboard/static/emoji/sassyparrot.gif"
+  },
+  {
+    "shortname": "guyparrot",
+    "image": "guyparrot.gif",
+    "path": "slackerboard/static/emoji/guyparrot.gif"
+  },
+  {
+    "shortname": "salt",
+    "image": "salt.png",
+    "path": "slackerboard/static/emoji/salt.png"
+  },
+  {
+    "shortname": "code-for-charlotte",
+    "image": "code-for-charlotte.png",
+    "path": "slackerboard/static/emoji/code-for-charlotte.png"
+  },
+  {
+    "shortname": "fingers_crossed",
+    "image": "fingers_crossed.jpg",
+    "path": "slackerboard/static/emoji/fingers_crossed.jpg"
+  },
+  {
+    "shortname": "tux",
+    "image": "tux.png",
+    "path": "slackerboard/static/emoji/tux.png"
+  },
+  {
+    "shortname": "gdi",
+    "image": "gdi.png",
+    "path": "slackerboard/static/emoji/gdi.png"
+  },
+  {
+    "shortname": "gdi-text",
+    "image": "gdi-text.png",
+    "path": "slackerboard/static/emoji/gdi-text.png"
+  },
+  {
+    "shortname": "confused_parrot",
+    "image": "confused_parrot.gif",
+    "path": "slackerboard/static/emoji/confused_parrot.gif"
+  },
+  {
+    "shortname": "slowparrot",
+    "image": "slowparrot.gif",
+    "path": "slackerboard/static/emoji/slowparrot.gif"
+  },
+  {
+    "shortname": "witnessprotectionparrot",
+    "image": "witnessprotectionparrot.gif",
+    "path": "slackerboard/static/emoji/witnessprotectionparrot.gif"
+  },
+  {
+    "shortname": "hamburgerparrot",
+    "image": "hamburgerparrot.gif",
+    "path": "slackerboard/static/emoji/hamburgerparrot.gif"
+  },
+  {
+    "shortname": "dancing_corgi",
+    "image": "dancing_corgi.gif",
+    "path": "slackerboard/static/emoji/dancing_corgi.gif"
+  },
+  {
+    "shortname": "brudda",
+    "image": "brudda.jpg",
+    "path": "slackerboard/static/emoji/brudda.jpg"
+  },
+  {
+    "shortname": "blackpanther",
+    "image": "blackpanther.png",
+    "path": "slackerboard/static/emoji/blackpanther.png"
+  },
+  {
+    "shortname": "skookum",
+    "image": "skookum.png",
+    "path": "slackerboard/static/emoji/skookum.png"
+  },
+  {
+    "shortname": "ultrafastparrot",
+    "image": "ultrafastparrot.gif",
+    "path": "slackerboard/static/emoji/ultrafastparrot.gif"
+  },
+  {
+    "shortname": "darkbeerparrot",
+    "image": "darkbeerparrot.gif",
+    "path": "slackerboard/static/emoji/darkbeerparrot.gif"
+  },
+  {
+    "shortname": "portalparrot",
+    "image": "portalparrot.gif",
+    "path": "slackerboard/static/emoji/portalparrot.gif"
+  },
+  {
+    "shortname": "coffeeparrot",
+    "image": "coffeeparrot.gif",
+    "path": "slackerboard/static/emoji/coffeeparrot.gif"
+  },
+  {
+    "shortname": "sadparrot",
+    "image": "sadparrot.gif",
+    "path": "slackerboard/static/emoji/sadparrot.gif"
+  },
+  {
+    "shortname": "ruby",
+    "image": "ruby.png",
+    "path": "slackerboard/static/emoji/ruby.png"
+  },
+  {
+    "shortname": "deadpool",
+    "image": "deadpool.png",
+    "path": "slackerboard/static/emoji/deadpool.png"
+  },
+  {
+    "shortname": "dadjoke",
+    "image": "dadjoke.gif",
+    "path": "slackerboard/static/emoji/dadjoke.gif"
+  },
+  {
+    "shortname": "centos",
+    "image": "centos.png",
+    "path": "slackerboard/static/emoji/centos.png"
+  },
+  {
+    "shortname": "empire",
+    "image": "empire.png",
+    "path": "slackerboard/static/emoji/empire.png"
+  },
+  {
+    "shortname": "rebel",
+    "image": "rebel.png",
+    "path": "slackerboard/static/emoji/rebel.png"
+  },
+  {
+    "shortname": "deathstar",
+    "image": "deathstar.png",
+    "path": "slackerboard/static/emoji/deathstar.png"
+  },
+  {
+    "shortname": "python",
+    "image": "python.png",
+    "path": "slackerboard/static/emoji/python.png"
+  },
+  {
+    "shortname": "javascript",
+    "image": "javascript.png",
+    "path": "slackerboard/static/emoji/javascript.png"
+  },
+  {
+    "shortname": "decepticon",
+    "image": "decepticon.jpg",
+    "path": "slackerboard/static/emoji/decepticon.jpg"
+  },
+  {
+    "shortname": "reddit-silver",
+    "image": "reddit-silver.png",
+    "path": "slackerboard/static/emoji/reddit-silver.png"
+  }
+]
