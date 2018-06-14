@@ -7,6 +7,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
 cd "$DIR/.."
 
 BUILD_ENV="$1"
+CONFIG='./config.yml'
 
 check_build_env () {
   # ask user to confirm BUILD_ENV if no argument given
@@ -131,6 +132,86 @@ check_root
 info 'checking build environment'
 check_build_env
 
+
+##
+## read a variable from the config file
+##
+read_config() {
+  config_line=`egrep "^#?$1:" $CONFIG`
+  read_config_result=`echo $config_line | awk  '{ print $2 }'`
+  echo $read_config_result
+}
+
+check_IP_match () {
+  HOST="$1"
+  echo
+  echo Checking your domain name . . .
+  if connect_to_port $HOST 443
+  then
+    echo
+    echo "Connection to $HOST succeeded."
+  else
+    echo WARNING:: This server does not appear to be accessible at $HOST:443.
+    echo
+    if connect_to_port $HOST 80
+    then
+      echo A connection to port 80 succeeds, however.
+      echo This suggests that your DNS settings are correct,
+      echo but something is keeping traffic to port 443 from getting to your server.
+      echo Check your networking configuration to see that connections to port 443 are allowed.
+    else
+      echo "A connection to http://$HOST (port 80) also fails."
+      echo
+      echo This suggests that $HOST resolves to the wrong IP address
+      echo or that traffic is not being routed to your server.
+    fi
+    echo
+    echo Google: \"open ports YOUR CLOUD SERVICE\" for information for resolving this problem.
+    sleep 3
+  fi
+}
+
+##
+## Check whether a connection to HOSTNAME ($1) on PORT ($2) is possible
+##
+connect_to_port () {
+  HOST="$1"
+  PORT="$2"
+  VERIFY=`date +%s | sha256sum | base64 | head -c 20`
+  echo -e "HTTP/1.1 200 OK\n\n $VERIFY" | nc -w 4 -l -p $PORT >/dev/null 2>&1 &
+  if curl --proto =http -s $HOST:$PORT --connect-timeout 3 | grep $VERIFY >/dev/null 2>&1
+  then
+    return 0
+  else
+    curl --proto =http -s localhost:$PORT >/dev/null 2>&1
+    return 1
+  fi
+}
+
+
+if [ "$BUILD_ENV" =  "production" ]; then
+  info 'loading config'
+  ./bin/build-config
+
+
+  info 'build ssl.conf'
+  ./bin/mustache "$CONFIG" templates/ssl.conf.mustache > nginx/prod/ssl.conf
+  info 'build nginx.conf'
+  ./bin/mustache "$CONFIG" templates/nginx.conf.mustache > nginx/prod/nginx.conf
+
+  read_config email
+  email="$read_config_result"
+
+  read_config hostname
+  hostname="$read_config_result"
+
+  info 'checking DNS settings'
+  check_IP_match "$hostname"
+
+  info 'running letsencrypt'
+  ./bin/letsencrypt "$hostname" "$email"
+fi
+
 info 'checking docker is installed'
 check_and_install_docker
 
@@ -140,16 +221,14 @@ add_sudo_users_to_docker_group
 info 'checking docker-compose is installed'
 check_and_install_docker_compose
 
-info 'building services (this might take a while)'
-compose build
 
 if [ "$BUILD_ENV" =  "production" ]; then
-  info 'running letsencrypt'
-  ./bin/letsencrypt
-
   info 'building frontend'
   compose run --rm slackerboard yarn run build
 fi
+
+info 'building services (this might take a while)'
+compose build
 
 info 'setting up db'
 compose run --rm rails_server bin/setup

@@ -1,1 +1,7 @@
 nginx/prod/*.conf
+certs
+.env
+tmp
+node_modules
+examples.txt
+log

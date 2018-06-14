@@ -7,9 +7,11 @@ require 'faraday'
 SLACK_TOKEN = ENV.fetch('SLACK_TOKEN')
 endpoint    = "https://slack.com/api/emoji.list?token=#{SLACK_TOKEN}"
 res         = JSON.parse(Faraday.get(endpoint).body)
-dirname     = 'slackerboard/static/emoji'
+dirname     = 'static/emoji'
 emoji       = []
 config_file = 'custom_emoji.json'
+
+Dir.chdir 'slackerboard'
 
 if res['ok']
   res['emoji'].each do |name, url|
@@ -34,3 +36,5 @@ else
   puts res
   exit 1
 end
+
+Dir.chdir '..'

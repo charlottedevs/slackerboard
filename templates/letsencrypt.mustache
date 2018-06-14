@@ -13,8 +13,6 @@ cleanup () {
 
 trap "cleanup" EXIT
 
-hostname="$1"
-email="$2"
 
 setup
 
@@ -30,7 +28,7 @@ docker run -it --rm \
   -v ${PWD}/certs-data:/data/letsencrypt \
   certbot/certbot \
   certonly -n \
-  -m "$email" --agree-tos \
+  -m {{email}} --agree-tos \
   --keep-until-expiring \
   --webroot --webroot-path=/data/letsencrypt \
-  -d "$hostname" --force-renewal
+  -d {{hostname}} --force-renewal
