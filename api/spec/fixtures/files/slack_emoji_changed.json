@@ -1,0 +1,18 @@
+{
+  "token": "z26uFbvR1xHJEdHE1OQiO6t8",
+  "team_id": "T061EG9RZ",
+  "api_app_id": "A0FFV41KK",
+  "event": {
+    "type": "emoji_changed",
+    "subtype": "add",
+    "name": "picard_facepalm",
+    "value": "https://avatars3.githubusercontent.com/u/6183?s=200&v=4",
+    "event_ts": "1465244570.336841"
+  },
+  "type": "event_callback",
+  "authed_users": [
+    "U061F7AUR"
+  ],
+  "event_id": "Ev9UQ52YNA",
+  "event_time": 1234567890
+}

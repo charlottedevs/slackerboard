@@ -149,4 +149,13 @@ RSpec.describe ProcessSlackEvent do
       it_behaves_like 'reaction removed'
     end
   end
+
+  describe 'emoji updated event' do
+    let(:event_fixture) { 'slack_emoji_changed' }
+
+    it 'calls on UpdateSlackEmoji' do
+      expect(UpdateSlackEmoji).to receive(:call)
+      perform
+    end
+  end
 end

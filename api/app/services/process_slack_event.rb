@@ -10,15 +10,17 @@ class ProcessSlackEvent
   private
 
   def process
-    if message_created?
-      create_message
-    elsif message_deleted?
-      destroy_message
-    elsif reaction_given?
-      create_reaction if channel
-    elsif reaction_removed?
-      destroy_reaction if channel
+    case
+    when message_created?  then create_message
+    when message_deleted?  then delete_message
+    when reaction_given?   then create_reaction  if channel
+    when reaction_removed? then destroy_reaction if channel
+    when emoji_changed?    then update_emoji
     end
+  end
+
+  def update_emoji
+    UpdateSlackEmoji.call
   end
 
   def create_message
@@ -87,10 +89,6 @@ class ProcessSlackEvent
     context.user ||= FetchSlackUser.call(slack_identifier: event['user']).user
   end
 
-  def message?
-    message_created? || messaged_delted?
-  end
-
   def reaction?
     reaction_given? || reaction_removed?
   end
@@ -101,6 +99,10 @@ class ProcessSlackEvent
 
   def message_created?
     message? && !event_subtype.present?
+  end
+
+  def emoji_changed?
+    event_type == 'emoji_changed'
   end
 
   def message_deleted?

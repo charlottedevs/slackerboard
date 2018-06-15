@@ -35,6 +35,8 @@ services:
     volumes:
       - ./api:/home/app/webapp
       - bundle:/usr/local/bundle
+      - ./slackerboard/config/emoji:/home/app/webapp/emoji
+      - ./slackerboard/static:/home/app/webapp/static
     links:
       - postgres
       - redis

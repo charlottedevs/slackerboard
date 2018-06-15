@@ -1,7 +1,7 @@
 const punycode = require('punycode');
 const twemoji = require('twemoji');
-const regularEmoji = require('../emoji.json');
-const customEmoji = require('../custom_emoji.json');
+const regularEmoji = require('../config/emoji/emoji.json');
+const customEmoji = require('../config/emoji/custom_emoji.json');
 
 const SKIN_VARIATIONS = {
   2: '1F3FB', // light
