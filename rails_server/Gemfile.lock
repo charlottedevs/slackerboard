@@ -44,6 +44,27 @@ GEM
       tzinfo (~> 1.1)
     arel (9.0.0)
     builder (3.2.3)
+    celluloid (0.17.3)
+      celluloid-essentials
+      celluloid-extras
+      celluloid-fsm
+      celluloid-pool
+      celluloid-supervision
+      timers (>= 4.1.1)
+    celluloid-essentials (0.20.5)
+      timers (>= 4.1.1)
+    celluloid-extras (0.20.5)
+      timers (>= 4.1.1)
+    celluloid-fsm (0.20.5)
+      timers (>= 4.1.1)
+    celluloid-io (0.17.3)
+      celluloid (>= 0.17.2)
+      nio4r (>= 1.1)
+      timers (>= 4.1.1)
+    celluloid-pool (0.20.5)
+      timers (>= 4.1.1)
+    celluloid-supervision (0.20.6)
+      timers (>= 4.1.1)
     coderay (1.1.2)
     concurrent-ruby (1.0.5)
     connection_pool (2.2.1)
@@ -61,8 +82,11 @@ GEM
       railties (>= 3.0.0)
     faraday (0.15.1)
       multipart-post (>= 1.2, < 3)
+    faraday_middleware (0.12.2)
+      faraday (>= 0.7.4, < 1.0)
     ffi (1.9.23)
     formatador (0.2.5)
+    gli (2.17.1)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
     guard (2.14.2)
@@ -79,6 +103,8 @@ GEM
       guard (~> 2.1)
       guard-compat (~> 1.1)
       rspec (>= 2.99.0, < 4.0)
+    hashie (3.5.7)
+    hitimes (1.2.6)
     i18n (1.0.1)
       concurrent-ruby (~> 1.0)
     interactor (3.1.0)
@@ -184,6 +210,13 @@ GEM
       connection_pool (~> 2.2, >= 2.2.0)
       rack-protection (>= 1.5.0)
       redis (>= 3.3.5, < 5)
+    slack-ruby-client (0.11.1)
+      activesupport
+      faraday (>= 0.9)
+      faraday_middleware
+      gli
+      hashie
+      websocket-driver
     spring (2.0.2)
       activesupport (>= 4.2)
     spring-watcher-listen (2.0.1)
@@ -198,6 +231,8 @@ GEM
       sprockets (>= 3.0.0)
     thor (0.20.0)
     thread_safe (0.3.6)
+    timers (4.1.2)
+      hitimes
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
     websocket-driver (0.7.0)
@@ -208,6 +243,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  celluloid-io
   dotenv-rails
   factory_bot_rails
   faraday
@@ -224,6 +260,7 @@ DEPENDENCIES
   rspec-rails
   scenic
   sidekiq
+  slack-ruby-client
   spring
   spring-watcher-listen (~> 2.0.0)
 
@@ -231,4 +268,4 @@ RUBY VERSION
    ruby 2.4.2p198
 
 BUNDLED WITH
-   1.16.1
+   1.16.2

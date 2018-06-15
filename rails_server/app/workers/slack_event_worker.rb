@@ -1,9 +1,8 @@
 class SlackEventWorker
   include Sidekiq::Worker
 
-  def perform(json)
-    event_params = JSON.parse(json)
-    result = ProcessSlackEvent.call(event_params)
+  def perform(event)
+    result = ProcessSlackEvent.call(event)
     if result.success?
       broadcast
     else
@@ -16,11 +15,11 @@ class SlackEventWorker
   def broadcast
     ActionCable.server.broadcast(
       'all_time_slackerboard_update',
-      slackerboard: Slackerboard.new.to_json
+      slackerboard: SlackerRanking.new.to_json
     )
     ActionCable.server.broadcast(
       'this_week_slackerboard_update',
-      slackerboard: Slackerboard.new(since: Time.zone.today.monday).to_json
+      slackerboard: SlackerRanking.new(since: Time.zone.today.monday).to_json
     )
   end
 end

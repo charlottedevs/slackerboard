@@ -8,11 +8,13 @@ Bundler.require(*Rails.groups)
 
 Dotenv::Railtie.load unless Rails.env.production?
 
-module LurkerBot
+module Slackerboard
   class Application < Rails::Application
     config.api_only = true
     config.time_zone = 'Eastern Time (US & Canada)'
     config.filter_parameters += [:token]
+
+    config.eager_load_paths << Rails.root.join('lib')
 
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.2

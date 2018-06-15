@@ -12,6 +12,8 @@ Rails.application.configure do
   # Show full error reports.
   config.consider_all_requests_local = true
 
+  config.debug_exception_response_format = :api
+
   config.action_cable.url = 'http://localhost:5000/cable'
   config.web_socket_server_url = 'ws://localhost:5000/cable'
 

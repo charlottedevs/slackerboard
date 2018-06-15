@@ -1,4 +1,4 @@
-class Slackerboard
+class SlackerRanking
   attr_reader :since
 
   def initialize(*args, since: nil)

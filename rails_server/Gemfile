@@ -15,6 +15,8 @@ gem 'puma', '~> 3.11'
 gem 'rack-cors'
 gem 'redis'
 gem 'scenic'
+gem 'slack-ruby-client'
+gem 'celluloid-io', require: ['celluloid/current', 'celluloid/io']
 
 group :development, :test do
   gem 'factory_bot_rails'

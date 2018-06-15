@@ -24,7 +24,7 @@ services:
       - ./slackerboard:/usr/src/app
       - slackerboard_node_modules:/usr/src/app/node_modules
 
-  rails_server:
+  rails_server: &rails_build
     build: rails_server
     command: bundle exec rails s -p 5000 -b 0.0.0.0
     environment:
@@ -40,16 +40,12 @@ services:
       - redis
 
   sidekiq:
-    build: rails_server
+    <<: *rails_build
     command: sidekiq -C config/sidekiq.yml
-    env_file:
-      - ./rails_server/.env
-    volumes:
-      - ./rails_server:/home/app/webapp
-      - bundle:/usr/local/bundle
-    links:
-      - postgres
-      - redis
+
+  lurkerbot:
+    <<: *rails_build
+    command: rake lurkerbot:start
 
   socket_io:
     build: socket_io
