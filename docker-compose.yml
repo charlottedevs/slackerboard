@@ -13,6 +13,8 @@ services:
       - /var/lib/letsencrypt:/var/lib/letsencrypt
     ports:
       - 80:80
+      - 4200:4200
+      - 8080:8080
 
   slackerboard:
     build: slackerboard

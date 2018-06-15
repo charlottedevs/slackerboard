@@ -11,5 +11,3 @@ COPY yarn.lock /usr/src/app/
 RUN yarn install
 
 COPY . ./
-
-EXPOSE 8080

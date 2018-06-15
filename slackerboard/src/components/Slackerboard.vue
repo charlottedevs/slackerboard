@@ -76,7 +76,7 @@ import FontAwesomeIcon from '@fortawesome/vue-fontawesome';
 import { faCaretDown } from '@fortawesome/fontawesome-free-solid';
 import io from 'socket.io-client';
 
-const wsEndpoint = 'https://api.charlottedevs.com:4200';
+const wsEndpoint = `${document.location.origin}:4200`;
 const socket = io(wsEndpoint);
 
 const allChannel = 'this_week_slackerboard_updates';
