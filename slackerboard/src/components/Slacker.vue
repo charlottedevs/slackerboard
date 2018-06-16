@@ -2,7 +2,7 @@
   <tr class="slacker">
     <th scope="row">
       <div style="position: relative;">
-        <img id="crown" v-if="index === 0" src="static/emoji/crown.png" />
+        <img id="crown" v-if="index === 0" src="static/images/crown.png" />
         <img v-bind:src="user.profile_image" alt="avatar" height="50" width="50"/>
       </div>
     </th>

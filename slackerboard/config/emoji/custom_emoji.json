@@ -263,5 +263,20 @@
     "shortname": "javascript",
     "image": "javascript.png",
     "path": "static/emoji/javascript.png"
+  },
+  {
+    "shortname": "decepticon",
+    "image": "decepticon.jpg",
+    "path": "static/emoji/decepticon.jpg"
+  },
+  {
+    "shortname": "reddit-silver",
+    "image": "reddit-silver.png",
+    "path": "static/emoji/reddit-silver.png"
+  },
+  {
+    "shortname": "mario-move",
+    "image": "mario-move.gif",
+    "path": "static/emoji/mario-move.gif"
   }
 ]
