@@ -23,8 +23,15 @@ services:
       - ./slackerboard:/usr/src/app
       - slackerboard_node_modules:/usr/src/app/node_modules
 
-  api: &rails_build
+  api: &rails_prod_build
     environment:
       - PORT=5000
       - RAILS_ENV=production
 
+  sidekiq:
+    <<: *rails_prod_build
+    command: sidekiq -C config/sidekiq.yml
+
+  lurkerbot:
+    <<: *rails_prod_build
+    command: rake lurkerbot:start
