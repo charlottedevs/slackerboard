@@ -15,6 +15,7 @@ class UpdateSlackEmoji
     config_file = 'emoji/custom_emoji.json'
     emoji       = []
 
+    FileUtils.mkdir(dirname) unless Dir.exist?(dirname)
     FileUtils.rm_rf Dir.glob(File.join(dirname, '*'))
 
     if res['ok']
