@@ -8,9 +8,6 @@ services:
       - socket_io
     volumes:
       - ./nginx/dev/nginx.conf:/etc/nginx/nginx.conf
-      - /etc/letsencrypt:/etc/letsencrypt
-      - /tmp/letsencrypt/www:/var/www
-      - /var/lib/letsencrypt:/var/lib/letsencrypt
       - /emoji:/emoji
     ports:
       - 80:80

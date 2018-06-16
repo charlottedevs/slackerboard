@@ -118,12 +118,13 @@ check_and_install_docker_compose () {
 
 compose () {
   if [ "$BUILD_ENV" = "production" ]; then
-    flags='-f production.yml'
+    bin/prod "$@"
   elif [ "$BUILD_ENV" != "development" ]; then
     abort "Unknown build environment: '$BUILD_ENV'.  Aborting."
+  else
+    step docker-compose "$@"
   fi
 
-  step docker-compose "$flags" "$@"
 }
 
 info 'checking permissions'
