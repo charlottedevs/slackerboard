@@ -24,7 +24,7 @@ io.on('connection', function(socket) {
 
     if (channel === 'noop') { return; }
 
-    let apiEndpoint = 'http://rails_server:5000/slackers';
+    let apiEndpoint = 'http://api:5000/slackers';
 
     if (channel === 'this_week_slackerboard_updates') {
       apiEndpoint = `${apiEndpoint}?thisweek`;

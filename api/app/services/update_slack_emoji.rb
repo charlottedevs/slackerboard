@@ -5,7 +5,7 @@ require 'faraday'
 class UpdateSlackEmoji
   include Interactor
 
-  SLACK_TOKEN = ENV.fetch('SLACK_TOKEN')
+  SLACK_TOKEN = ENV.fetch('SLACK_API_TOKEN')
 
   def call
     endpoint    = "https://slack.com/api/emoji.list?token=#{SLACK_TOKEN}"

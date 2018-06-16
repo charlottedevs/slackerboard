@@ -12,7 +12,7 @@ class ProcessSlackEvent
   def process
     case
     when message_created?  then create_message
-    when message_deleted?  then delete_message
+    when message_deleted?  then destroy_message
     when reaction_given?   then create_reaction  if channel
     when reaction_removed? then destroy_reaction if channel
     when emoji_changed?    then update_emoji
@@ -56,7 +56,7 @@ class ProcessSlackEvent
   end
 
   def emoji
-    event['reaction']
+    event.reaction
   end
 
   def type
@@ -86,50 +86,38 @@ class ProcessSlackEvent
   end
 
   def user
-    context.user ||= FetchSlackUser.call(slack_identifier: event['user']).user
+    context.user ||= FetchSlackUser.call(slack_identifier: event.user).user
   end
 
   def reaction?
     reaction_given? || reaction_removed?
   end
 
-  def reaction_emoji
-    event['reaction']
-  end
-
   def message_created?
-    message? && !event_subtype.present?
+    message? && !event.subtype.present?
   end
 
   def emoji_changed?
-    event_type == 'emoji_changed'
+    event.type == 'emoji_changed'
   end
 
   def message_deleted?
-    message? && event_subtype == 'message_deleted'
+    message? && event.subtype == 'message_deleted'
   end
 
   def reaction_given?
-    event_type == 'reaction_added'
+    event.type == 'reaction_added'
   end
 
   def reaction_removed?
-    event_type == 'reaction_removed'
+    event.type == 'reaction_removed'
   end
 
   def message?
-    event_type == 'message'
-  end
-
-  def event_type
-    event['type']
-  end
-
-  def event_subtype
-    event['subtype']
+    event.type == 'message'
   end
 
   def event
-    context.event
+    OpenStruct.new(context.event.to_hash)
   end
 end

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Slackerboard do
+RSpec.describe SlackerRanking do
   subject { described_class.new.to_json }
   let(:user) { create(:user) }
   let(:slack_channel) { create(:slack_channel) }

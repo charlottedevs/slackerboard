@@ -231,6 +231,6 @@ info 'building services (this might take a while)'
 compose build
 
 info 'setting up db'
-compose run --rm rails_server bin/setup
+compose run --rm api bin/setup
 
 echo 'setup complete'

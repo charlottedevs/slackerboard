@@ -30,6 +30,7 @@ RSpec.describe ProcessSlackEvent do
     allow(FetchSlackUser).to receive(:call).and_return(user_fetch_result)
     allow(FetchSlackChannel).to receive(:call).and_return(channel_fetch_result)
     allow(SlackReaction).to receive(:create)
+    allow(UpdateSlackEmoji).to receive(:call)
   end
 
   describe 'error handling' do

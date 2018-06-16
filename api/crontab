@@ -1,4 +1,0 @@
-MAILTO=""
-
-# run every month
-0 0 1 * * /bin/bash -l -c 'cd /home/deploy/lurker_api && ./services/rails_server/bin/reset >> /tmp/cron_log.log 2>&1'

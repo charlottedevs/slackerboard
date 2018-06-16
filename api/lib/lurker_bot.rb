@@ -24,13 +24,13 @@ class LurkerBot
       reaction_removed
       ).each do |event|
         client.on event do |data|
-          Rails.logger.debug data
+          Rails.logger.debug data.as_json
           SlackEventWorker.perform_async(data)
         end
       end
 
       client.on :message do |data|
-        Rails.logger.debug data
+        Rails.logger.debug data.as_json
         SlackEventWorker.perform_async(data)
 
         if spoken_to?(data)

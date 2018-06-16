@@ -56,6 +56,7 @@ services:
     command: npm start
     links:
       - redis
+      - api
     volumes:
       - ./socket_io:/usr/src/app
       - socket_io_node_modules:/usr/src/app/node_modules

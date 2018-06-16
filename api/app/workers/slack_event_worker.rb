@@ -2,11 +2,11 @@ class SlackEventWorker
   include Sidekiq::Worker
 
   def perform(event)
-    result = ProcessSlackEvent.call(event)
+    result = ProcessSlackEvent.call(event: event)
     if result.success?
       broadcast
     else
-      Rails.logger.error "Slack Event Failure! #{result.error}"
+      logger.fatal "Slack Event Failure! #{result.error}"
     end
   end
 
