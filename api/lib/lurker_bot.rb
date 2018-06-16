@@ -22,6 +22,7 @@ class LurkerBot
       %i(
       reaction_added
       reaction_removed
+      emoji_changed
       ).each do |event|
         client.on event do |data|
           Rails.logger.debug data.as_json
