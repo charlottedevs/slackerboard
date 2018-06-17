@@ -11,7 +11,7 @@ class UpdateSlackEmoji
   def call
     endpoint    = "https://slack.com/api/emoji.list?token=#{SLACK_TOKEN}"
     res         = JSON.parse(Faraday.get(endpoint).body)
-    dirname     = 'static/emoji'
+    dirname     = 'emoji/images'
     config_file = 'emoji/custom_emoji.json'
     emoji       = []
 

@@ -8,7 +8,9 @@ services:
       - socket_io
     volumes:
       - ./nginx/dev/nginx.conf:/etc/nginx/nginx.conf
-      - /emoji:/emoji
+      - ./nginx/common/routes.conf:/etc/nginx/routes.conf
+      - ./nginx/common/upstreams.conf:/etc/nginx/upstreams.conf
+      - ./emoji:/data/emoji
     ports:
       - 80:80
       - 4200:4200
@@ -34,8 +36,8 @@ services:
     volumes:
       - ./api:/home/app/webapp
       - bundle:/usr/local/bundle
-      - ./slackerboard/config/emoji:/home/app/webapp/emoji
-      - ./slackerboard/static:/home/app/webapp/static
+      - ./emoji:/home/app/webapp/emoji/images
+      - ./slackerboard/config/emoji:/home/app/webapp/emoji/config
     links:
       - postgres
       - redis
